@@ -1,55 +1,970 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Abhishek | SDET Portfolio</title>
-  <style>
-    body { font-family: Arial; margin: 0; }
-    header { background: #0f172a; color: white; padding: 40px; text-align: center; }
-    section { padding: 30px; }
-    h2 { color: #333; }
-    .project { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 10px; }
-  </style>
-</head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SDET Unicorns — Test Automation Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ── RESET & TOKENS ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0b0c0f;
+  --ink2:#12141a;
+  --ink3:#1c1f28;
+  --border:#252934;
+  --border2:#2e3340;
+  --lime:#b6f542;
+  --lime2:#d4fc6e;
+  --text:#e8eaf0;
+  --muted:#6b7385;
+  --muted2:#9aa0b0;
+  --white:#ffffff;
+  --r:12px;
+  --r2:20px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font-family:'Instrument Sans',sans-serif;overflow-x:hidden;line-height:1.6}
 
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  display:flex;align-items:center;gap:0;
+  padding:0 40px;height:68px;
+  background:rgba(11,12,15,.88);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(18px);
+}
+.nav-logo{
+  display:flex;align-items:center;gap:10px;
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-weight:800;font-size:20px;color:var(--white);
+  text-decoration:none;margin-right:auto;
+  letter-spacing:-.02em;
+}
+.nav-logo-icon{
+  width:34px;height:34px;border-radius:8px;
+  background:var(--lime);display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.nav-links{display:flex;align-items:center;gap:32px;list-style:none}
+.nav-links a{color:var(--muted2);text-decoration:none;font-size:14px;font-weight:500;transition:color .15s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{display:flex;align-items:center;gap:10px;margin-left:32px}
+.btn-ghost{
+  padding:8px 16px;border-radius:8px;
+  border:1px solid var(--border2);background:transparent;
+  color:var(--text);font-family:'Instrument Sans',sans-serif;
+  font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;
+  text-decoration:none;display:inline-flex;align-items:center;
+}
+.btn-ghost:hover{border-color:var(--lime);color:var(--lime)}
+.btn-primary{
+  padding:9px 20px;border-radius:8px;
+  background:var(--lime);color:#0b0c0f;
+  font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:600;
+  cursor:pointer;border:none;transition:all .15s;text-decoration:none;
+  display:inline-flex;align-items:center;
+}
+.btn-primary:hover{background:var(--lime2);transform:translateY(-1px)}
+.nav-ham{display:none;background:none;border:none;cursor:pointer;padding:4px;color:var(--text);font-size:22px}
+
+/* ── HERO ── */
+.hero{
+  padding:160px 40px 100px;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.hero-grid-bg{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:
+    linear-gradient(var(--border) 1px,transparent 1px),
+    linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 40%,black 20%,transparent 80%);
+  opacity:.4;
+}
+.hero-glow{
+  position:absolute;top:-100px;left:50%;transform:translateX(-50%);
+  width:700px;height:500px;
+  background:radial-gradient(ellipse,rgba(182,245,66,.12) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(182,245,66,.1);border:1px solid rgba(182,245,66,.25);
+  color:var(--lime);padding:6px 14px;border-radius:100px;
+  font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  margin-bottom:28px;position:relative;
+}
+.hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--lime);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+h1.hero-title{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:clamp(44px,7vw,88px);font-weight:900;
+  letter-spacing:-.04em;line-height:1.0;
+  color:var(--white);position:relative;
+  margin-bottom:12px;
+}
+.hero-sub{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:clamp(44px,7vw,88px);font-weight:900;
+  letter-spacing:-.04em;line-height:1.0;
+  color:var(--lime);position:relative;
+  margin-bottom:24px;
+}
+.hero-desc{
+  font-size:17px;color:var(--muted2);max-width:540px;
+  margin:0 auto 40px;line-height:1.7;position:relative;
+}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative}
+.btn-lg{padding:14px 32px;font-size:15px;border-radius:10px}
+
+/* ── TRUST STRIP ── */
+.trust{padding:28px 40px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--ink2);overflow:hidden}
+.trust-inner{display:flex;align-items:center;gap:0;white-space:nowrap}
+.trust-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-right:40px;flex-shrink:0}
+.trust-scroll{display:flex;gap:40px;animation:scroll-x 28s linear infinite}
+.trust-scroll:hover{animation-play-state:paused}
+@keyframes scroll-x{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.trust-item{display:flex;align-items:center;gap:8px;color:var(--muted2);font-size:13px;font-weight:500;flex-shrink:0}
+.trust-dot{width:6px;height:6px;border-radius:50%;background:var(--lime);flex-shrink:0}
+
+/* ── PIPELINE HERO VISUAL ── */
+.pipeline-section{padding:0 40px 80px;position:relative}
+.pipeline-card{
+  max-width:900px;margin:0 auto;
+  background:var(--ink2);border:1px solid var(--border);border-radius:var(--r2);
+  overflow:hidden;
+}
+.pipeline-header{
+  padding:12px 18px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+}
+.pipeline-dots{display:flex;gap:6px}
+.pipeline-dot{width:11px;height:11px;border-radius:50%}
+.pd-r{background:#ff5f56}.pd-y{background:#ffbd2e}.pd-g{background:#27c93f}
+.pipeline-title-bar{margin-left:12px;font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.pipeline-body{padding:20px;display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.pipe-stage{
+  background:var(--ink3);border:1px solid var(--border);border-radius:10px;
+  padding:14px 12px;text-align:center;position:relative;
+  transition:all .3s;
+}
+.pipe-stage.active{border-color:var(--lime);background:rgba(182,245,66,.06)}
+.pipe-stage.done{border-color:#27c93f;background:rgba(39,201,63,.06)}
+.pipe-stage.fail{border-color:#ff5f56;background:rgba(255,95,86,.06)}
+.pipe-icon{font-size:22px;margin-bottom:6px;display:block}
+.pipe-name{font-size:11px;font-weight:600;color:var(--text);font-family:'JetBrains Mono',monospace}
+.pipe-status{font-size:10px;margin-top:4px;font-family:'JetBrains Mono',monospace}
+.pipe-status.ok{color:#27c93f}.pipe-status.running{color:var(--lime)}.pipe-status.err{color:#ff5f56}.pipe-status.wait{color:var(--muted)}
+.pipe-bar{height:3px;border-radius:2px;margin-top:8px;background:var(--border);overflow:hidden}
+.pipe-fill{height:100%;border-radius:2px;background:var(--lime);width:0%;transition:width 2s ease}
+.pipe-stage.done .pipe-fill{background:#27c93f;width:100%}
+.pipe-stage.fail .pipe-fill{background:#ff5f56;width:73%}
+.pipeline-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border)}
+.pipe-stat{background:var(--ink2);padding:16px 20px}
+.pipe-stat-num{font-family:'Cabinet Grotesk',sans-serif;font-size:28px;font-weight:800;color:var(--white)}
+.pipe-stat-num span{color:var(--lime)}
+.pipe-stat-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+
+/* ── SECTION COMMON ── */
+section{padding:96px 40px}
+.container{max-width:1100px;margin:0 auto}
+.label-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(182,245,66,.08);border:1px solid rgba(182,245,66,.2);
+  color:var(--lime);padding:5px 12px;border-radius:100px;
+  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:20px;
+}
+h2.sec-title{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:clamp(32px,4.5vw,52px);font-weight:800;
+  letter-spacing:-.03em;color:var(--white);line-height:1.1;
+  margin-bottom:16px;
+}
+.sec-desc{font-size:16px;color:var(--muted2);max-width:560px;line-height:1.7}
+
+/* ── FOR WHO ── */
+.who-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;background:var(--border);border-radius:var(--r2);overflow:hidden;margin-top:56px}
+.who-card{background:var(--ink2);padding:40px 36px;position:relative;overflow:hidden;transition:background .2s}
+.who-card:hover{background:var(--ink3)}
+.who-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--lime);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.who-card:hover::before{transform:scaleX(1)}
+.who-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--lime);font-weight:500;margin-bottom:20px;letter-spacing:.1em}
+.who-title{font-family:'Cabinet Grotesk',sans-serif;font-size:22px;font-weight:800;color:var(--white);margin-bottom:14px;letter-spacing:-.02em}
+.who-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.who-list li{display:flex;gap:10px;font-size:14px;color:var(--muted2);line-height:1.5}
+.who-list li::before{content:'→';color:var(--lime);flex-shrink:0;font-family:'JetBrains Mono',monospace}
+
+/* ── COURSES ── */
+.courses-header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:48px;flex-wrap:wrap}
+.course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+.course-card{
+  background:var(--ink2);border:1px solid var(--border);border-radius:var(--r2);
+  overflow:hidden;transition:all .2s;cursor:pointer;text-decoration:none;display:block;
+}
+.course-card:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.course-thumb{height:190px;position:relative;overflow:hidden}
+.course-thumb-bg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:56px;position:relative}
+.thumb-playwright{background:linear-gradient(135deg,#0d1117 0%,#1a2744 100%)}
+.thumb-mobile{background:linear-gradient(135deg,#0d1117 0%,#1d1044 100%)}
+.thumb-api{background:linear-gradient(135deg,#0d1117 0%,#04261f 100%)}
+.course-badge{position:absolute;top:12px;right:12px;background:var(--lime);color:#0b0c0f;font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:.04em}
+.course-body{padding:24px}
+.course-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.course-tag{background:var(--ink3);border:1px solid var(--border);color:var(--muted2);font-size:11px;font-weight:500;padding:3px 8px;border-radius:6px;font-family:'JetBrains Mono',monospace}
+.course-title{font-family:'Cabinet Grotesk',sans-serif;font-size:18px;font-weight:800;color:var(--white);letter-spacing:-.02em;margin-bottom:10px;line-height:1.3}
+.course-meta{display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.course-meta-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.course-meta-item .ico{font-size:14px}
+.course-price{display:flex;align-items:center;gap:10px}
+.price-now{font-family:'Cabinet Grotesk',sans-serif;font-size:24px;font-weight:800;color:var(--lime)}
+.price-was{font-size:14px;color:var(--muted);text-decoration:line-through}
+.price-stars{margin-left:auto;font-size:13px;color:#fbbf24;font-weight:600}
+
+/* ── STATS BAND ── */
+.stats-band{background:var(--ink2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:56px 40px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;max-width:900px;margin:0 auto;background:var(--border)}
+.stat-box{background:var(--ink2);padding:36px 28px;text-align:center}
+.stat-big{font-family:'Cabinet Grotesk',sans-serif;font-size:48px;font-weight:900;color:var(--white);letter-spacing:-.04em;line-height:1}
+.stat-big b{color:var(--lime)}
+.stat-sub{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:8px;font-weight:600}
+
+/* ── TESTIMONIALS ── */
+.reviews-outer{overflow:hidden;position:relative}
+.reviews-outer::before,.reviews-outer::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none}
+.reviews-outer::before{left:0;background:linear-gradient(90deg,var(--ink),transparent)}
+.reviews-outer::after{right:0;background:linear-gradient(-90deg,var(--ink),transparent)}
+.reviews-track{display:flex;gap:20px;animation:slide-reviews 40s linear infinite}
+.reviews-track:hover{animation-play-state:paused}
+@keyframes slide-reviews{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.review-card{
+  flex-shrink:0;width:340px;
+  background:var(--ink2);border:1px solid var(--border);border-radius:var(--r2);
+  padding:28px;
+}
+.review-verified{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--lime);font-weight:600;margin-bottom:14px;letter-spacing:.04em}
+.review-verified::before{content:'✓';background:var(--lime);color:#0b0c0f;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800}
+.review-text{font-size:14px;color:var(--muted2);line-height:1.7;margin-bottom:20px;font-style:italic}
+.review-author{display:flex;align-items:center;gap:12px}
+.review-avatar{width:38px;height:38px;border-radius:50%;background:var(--ink3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:15px;color:var(--lime);flex-shrink:0}
+.review-name{font-size:14px;font-weight:600;color:var(--white)}
+.review-role{font-size:12px;color:var(--muted)}
+.reviews-header{text-align:center;margin-bottom:56px}
+
+/* ── INSTRUCTOR ── */
+.instructor-section{background:var(--ink2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.instructor-inner{display:grid;grid-template-columns:1fr 1.6fr;gap:80px;align-items:center;max-width:1100px;margin:0 auto}
+.instructor-photo-wrap{position:relative}
+.instructor-photo{
+  width:100%;aspect-ratio:3/4;border-radius:var(--r2);
+  background:linear-gradient(160deg,#1c2030 0%,#0d1020 100%);
+  border:1px solid var(--border2);display:flex;align-items:flex-end;
+  overflow:hidden;position:relative;
+}
+.instructor-photo-graphic{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 40% 30%,rgba(182,245,66,.08) 0%,transparent 55%),
+    repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(182,245,66,.02) 20px,rgba(182,245,66,.02) 21px);
+}
+.instructor-photo-placeholder{
+  position:relative;z-index:1;width:100%;display:flex;align-items:center;justify-content:center;
+  font-size:100px;padding:40px 0 20px;
+}
+.instructor-badge{
+  position:absolute;bottom:16px;right:16px;
+  background:var(--lime);color:#0b0c0f;border-radius:10px;padding:10px 14px;z-index:2;
+}
+.instructor-badge-num{font-family:'Cabinet Grotesk',sans-serif;font-size:26px;font-weight:900;line-height:1}
+.instructor-badge-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.instructor-name{font-family:'Cabinet Grotesk',sans-serif;font-size:40px;font-weight:900;color:var(--white);letter-spacing:-.03em;margin-bottom:8px}
+.instructor-role{color:var(--lime);font-size:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:24px}
+.instructor-bio{font-size:15px;color:var(--muted2);line-height:1.8;margin-bottom:32px}
+.instructor-bullets{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:36px}
+.instructor-bullets li{display:flex;gap:12px;font-size:14px;color:var(--muted2);line-height:1.5}
+.bullet-lime{color:var(--lime);font-weight:700;font-family:'JetBrains Mono',monospace;flex-shrink:0}
+
+/* ── BENEFITS ── */
+.benefits-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;background:var(--border);border-radius:var(--r2);overflow:hidden;margin-top:56px}
+.benefit-card{background:var(--ink2);padding:32px;transition:background .2s}
+.benefit-card:hover{background:var(--ink3)}
+.benefit-icon{font-size:28px;margin-bottom:16px;display:block}
+.benefit-title{font-family:'Cabinet Grotesk',sans-serif;font-size:17px;font-weight:800;color:var(--white);margin-bottom:8px;letter-spacing:-.02em}
+.benefit-desc{font-size:14px;color:var(--muted2);line-height:1.6}
+
+/* ── CTA ── */
+.cta-section{background:var(--ink2);border-top:1px solid var(--border);padding:100px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-glow{position:absolute;bottom:-200px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(182,245,66,.15),transparent 65%);pointer-events:none}
+.cta-box{max-width:640px;margin:0 auto;position:relative}
+.cta-badge{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+.cta-badge-item{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted2)}
+.cta-badge-item::before{content:'✓';color:var(--lime);font-weight:700}
+.cta-title{font-family:'Cabinet Grotesk',sans-serif;font-size:clamp(36px,5vw,60px);font-weight:900;color:var(--white);letter-spacing:-.03em;line-height:1.05;margin-bottom:20px}
+.cta-title span{color:var(--lime)}
+.cta-desc{font-size:16px;color:var(--muted2);margin-bottom:36px;line-height:1.7}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-xl{padding:16px 40px;font-size:16px;border-radius:12px;font-weight:700}
+
+/* ── NEWSLETTER ── */
+.nl-section{padding:72px 40px;border-top:1px solid var(--border)}
+.nl-inner{max-width:580px;margin:0 auto;text-align:center}
+.nl-title{font-family:'Cabinet Grotesk',sans-serif;font-size:28px;font-weight:800;color:var(--white);letter-spacing:-.03em;margin-bottom:10px}
+.nl-desc{font-size:14px;color:var(--muted2);margin-bottom:28px;line-height:1.6}
+.nl-form{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.nl-input{
+  flex:1;min-width:220px;max-width:320px;
+  background:var(--ink2);border:1px solid var(--border2);border-radius:10px;
+  padding:12px 16px;color:var(--text);font-family:'Instrument Sans',sans-serif;
+  font-size:14px;outline:none;transition:border-color .15s;
+}
+.nl-input:focus{border-color:var(--lime)}
+.nl-input::placeholder{color:var(--muted)}
+.nl-perks{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.nl-perk{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.nl-perk::before{content:'●';color:var(--lime);font-size:6px}
+
+/* ── FOOTER ── */
+footer{background:var(--ink2);border-top:1px solid var(--border);padding:60px 40px 32px}
+.footer-inner{max-width:1100px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:56px}
+.footer-brand p{font-size:14px;color:var(--muted2);margin-top:14px;line-height:1.6;max-width:240px}
+.footer-col h4{font-family:'Cabinet Grotesk',sans-serif;font-size:14px;font-weight:800;color:var(--white);margin-bottom:16px;letter-spacing:-.01em}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-col ul li a{color:var(--muted2);text-decoration:none;font-size:14px;transition:color .15s}
+.footer-col ul li a:hover{color:var(--lime)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:28px;border-top:1px solid var(--border);flex-wrap:wrap;gap:16px}
+.footer-copy{font-size:13px;color:var(--muted)}
+.footer-links{display:flex;gap:20px}
+.footer-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .15s}
+.footer-links a:hover{color:var(--lime)}
+
+/* ── ANIMATIONS ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .instructor-inner{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-top{grid-template-columns:1fr 1fr;gap:32px}
+}
+@media(max-width:640px){
+  nav{padding:0 20px}
+  .nav-links,.nav-cta{display:none}
+  .nav-ham{display:block}
+  .hero{padding:110px 20px 60px}
+  section{padding:64px 20px}
+  .pipeline-section{padding:0 20px 60px}
+  .pipeline-body{grid-template-columns:repeat(3,1fr)}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .footer-top{grid-template-columns:1fr}
+  .stats-band{padding:40px 20px}
+  .instructor-inner{gap:40px}
+  .trust{padding:20px}
+}
+</style>
+</head>
 <body>
 
-<header>
-  <h1>Abhishek K</h1>
-  <p>SDET | QA Automation Engineer</p>
-  <p>Selenium | Rest Assured | CI/CD</p>
-</header>
-
-<section>
-  <h2>About Me</h2>
-  <p>QA Automation Engineer with 4+ years experience in automation frameworks, API testing, and CI/CD pipelines.</p>
-</section>
-
-<section>
-  <h2>Skills</h2>
-  <p>Java | Selenium | TestNG | Cucumber | Rest Assured | Jenkins | SQL</p>
-</section>
-
-<section>
-  <h2>Projects</h2>
-
-  <div class="project">
-    <h3>UI Automation Framework</h3>
-    <p>Built Selenium framework using TestNG & POM with parallel execution.</p>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">🦄</div>
+    SDETUnicorns
+  </a>
+  <ul class="nav-links">
+    <li><a href="#courses">Courses</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#community">Community</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="#" class="btn-ghost">Login</a>
+    <a href="#pricing" class="btn-primary">Join Academy</a>
   </div>
+  <button class="nav-ham">☰</button>
+</nav>
 
-  <div class="project">
-    <h3>API Automation Framework</h3>
-    <p>Developed Rest Assured framework with filters, schema validation, CI/CD.</p>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-tag">Testing that fits your career</div>
+  <h1 class="hero-title">Test for Quality,</h1>
+  <div class="hero-sub">Not for Coverage.</div>
+  <p class="hero-desc">Learn how to build modern test automation that integrates into pipelines, improves reliability, and drives real engineering outcomes.</p>
+  <div class="hero-btns">
+    <a href="#courses" class="btn-primary btn-lg">Browse Courses</a>
+    <a href="#pricing" class="btn-ghost btn-lg">Join Academy</a>
   </div>
-
 </section>
 
+<!-- TRUST STRIP -->
+<div class="trust">
+  <div class="trust-inner">
+    <span class="trust-label">Trusted by 50,000+ engineers</span>
+    <div class="trust-scroll">
+      <span class="trust-item"><span class="trust-dot"></span> Playwright</span>
+      <span class="trust-item"><span class="trust-dot"></span> Selenium WebDriver</span>
+      <span class="trust-item"><span class="trust-dot"></span> Appium 2.0</span>
+      <span class="trust-item"><span class="trust-dot"></span> WebdriverIO</span>
+      <span class="trust-item"><span class="trust-dot"></span> API Testing</span>
+      <span class="trust-item"><span class="trust-dot"></span> CI/CD Pipelines</span>
+      <span class="trust-item"><span class="trust-dot"></span> TypeScript</span>
+      <span class="trust-item"><span class="trust-dot"></span> Supertest</span>
+      <span class="trust-item"><span class="trust-dot"></span> AI-Powered Testing</span>
+      <span class="trust-item"><span class="trust-dot"></span> Docker</span>
+      <!-- duplicate for seamless loop -->
+      <span class="trust-item"><span class="trust-dot"></span> Playwright</span>
+      <span class="trust-item"><span class="trust-dot"></span> Selenium WebDriver</span>
+      <span class="trust-item"><span class="trust-dot"></span> Appium 2.0</span>
+      <span class="trust-item"><span class="trust-dot"></span> WebdriverIO</span>
+      <span class="trust-item"><span class="trust-dot"></span> API Testing</span>
+      <span class="trust-item"><span class="trust-dot"></span> CI/CD Pipelines</span>
+      <span class="trust-item"><span class="trust-dot"></span> TypeScript</span>
+      <span class="trust-item"><span class="trust-dot"></span> Supertest</span>
+      <span class="trust-item"><span class="trust-dot"></span> AI-Powered Testing</span>
+      <span class="trust-item"><span class="trust-dot"></span> Docker</span>
+    </div>
+  </div>
+</div>
+
+<!-- PIPELINE VISUAL -->
+<div class="pipeline-section" style="padding-top:56px">
+  <div class="pipeline-card">
+    <div class="pipeline-header">
+      <div class="pipeline-dots">
+        <div class="pipeline-dot pd-r"></div>
+        <div class="pipeline-dot pd-y"></div>
+        <div class="pipeline-dot pd-g"></div>
+      </div>
+      <span class="pipeline-title-bar">CI/CD Pipeline — main branch · run #2847</span>
+    </div>
+    <div class="pipeline-body">
+      <div class="pipe-stage done">
+        <span class="pipe-icon">📦</span>
+        <div class="pipe-name">Build</div>
+        <div class="pipe-status ok">✓ passed</div>
+        <div class="pipe-bar"><div class="pipe-fill"></div></div>
+      </div>
+      <div class="pipe-stage done">
+        <span class="pipe-icon">🔍</span>
+        <div class="pipe-name">Lint</div>
+        <div class="pipe-status ok">✓ clean</div>
+        <div class="pipe-bar"><div class="pipe-fill"></div></div>
+      </div>
+      <div class="pipe-stage active" id="test-stage">
+        <span class="pipe-icon">🧪</span>
+        <div class="pipe-name">Tests</div>
+        <div class="pipe-status running" id="test-status">⚡ running</div>
+        <div class="pipe-bar"><div class="pipe-fill" id="test-bar" style="width:65%"></div></div>
+      </div>
+      <div class="pipe-stage" id="deploy-stage">
+        <span class="pipe-icon">🚀</span>
+        <div class="pipe-name">Deploy</div>
+        <div class="pipe-status wait" id="deploy-status">· waiting</div>
+        <div class="pipe-bar"><div class="pipe-fill" id="deploy-bar" style="width:0%"></div></div>
+      </div>
+      <div class="pipe-stage" id="insight-stage">
+        <span class="pipe-icon">📊</span>
+        <div class="pipe-name">Insights</div>
+        <div class="pipe-status wait" id="insight-status">· waiting</div>
+        <div class="pipe-bar"><div class="pipe-fill" id="insight-bar" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="pipeline-stats">
+      <div class="pipe-stat">
+        <div class="pipe-stat-num"><span id="pass-count">0</span>/95</div>
+        <div class="pipe-stat-lbl">Tests Passing</div>
+      </div>
+      <div class="pipe-stat">
+        <div class="pipe-stat-num"><span>4.8</span><span style="font-size:20px;color:var(--muted)">★</span></div>
+        <div class="pipe-stat-lbl">Avg. Course Rating</div>
+      </div>
+      <div class="pipe-stat">
+        <div class="pipe-stat-num"><span style="color:var(--lime)">140</span>+</div>
+        <div class="pipe-stat-lbl">Countries Reached</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHO IS IT FOR -->
+<section id="about">
+  <div class="container reveal">
+    <div class="label-chip">Who this academy is for</div>
+    <h2 class="sec-title">Become the engineer<br>who owns quality.</h2>
+    <p class="sec-desc">Whether you're coming from manual testing, automation, or development — the academy helps you grow from basic testing to real end-to-end quality engineering.</p>
+    <div class="who-grid">
+      <div class="who-card">
+        <div class="who-num">01 — MANUAL TESTERS</div>
+        <div class="who-title">Level Up From Manual Testing</div>
+        <ul class="who-list">
+          <li>Move beyond executing test cases</li>
+          <li>Learn to design and build automation from scratch</li>
+          <li>Work directly with developers and ship confidently</li>
+        </ul>
+      </div>
+      <div class="who-card">
+        <div class="who-num">02 — SDET ENGINEERS</div>
+        <div class="who-title">Build Automation Systems That Scale</div>
+        <ul class="who-list">
+          <li>Build web, mobile, and API automation frameworks</li>
+          <li>Integrate automated tests into CI/CD pipelines</li>
+          <li>Keep code review-friendly, maintainable, and scalable</li>
+        </ul>
+      </div>
+      <div class="who-card">
+        <div class="who-num">03 — DEVELOPERS</div>
+        <div class="who-title">Ship Software With Confidence</div>
+        <ul class="who-list">
+          <li>Handle environments, observability, and deployment workflows</li>
+          <li>Use AI to accelerate test design and analysis</li>
+          <li>Reduce noise, increase signal, catch issues earlier</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section id="courses" style="background:var(--ink2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="courses-header reveal">
+      <div>
+        <div class="label-chip">Your path to SDET roles</div>
+        <h2 class="sec-title" style="margin-bottom:0">Learn In-Demand Skills</h2>
+      </div>
+      <a href="#" class="btn-ghost">Browse All Courses →</a>
+    </div>
+    <div class="course-grid">
+      <a href="#" class="course-card reveal">
+        <div class="course-thumb">
+          <div class="course-thumb-bg thumb-playwright">
+            <span style="filter:drop-shadow(0 0 24px rgba(45,211,111,.5))">🎭</span>
+          </div>
+          <div class="course-badge">BESTSELLER</div>
+        </div>
+        <div class="course-body">
+          <div class="course-tags">
+            <span class="course-tag">TypeScript</span>
+            <span class="course-tag">Page Object Model</span>
+            <span class="course-tag">CI/CD</span>
+          </div>
+          <div class="course-title">Playwright Complete Beginner Course</div>
+          <div class="course-meta">
+            <span class="course-meta-item"><span class="ico">⏱</span> 10h</span>
+            <span class="course-meta-item"><span class="ico">📖</span> 95 lessons</span>
+            <span class="course-meta-item"><span class="ico">👥</span> 10K students</span>
+          </div>
+          <div class="course-price">
+            <span class="price-now">$19.99</span>
+            <span class="price-was">$130</span>
+            <span class="price-stars">⭐ 4.9</span>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="course-card reveal" style="animation-delay:.1s">
+        <div class="course-thumb">
+          <div class="course-thumb-bg thumb-mobile">
+            <span style="filter:drop-shadow(0 0 24px rgba(124,111,255,.5))">📱</span>
+          </div>
+          <div class="course-badge">POPULAR</div>
+        </div>
+        <div class="course-body">
+          <div class="course-tags">
+            <span class="course-tag">JavaScript</span>
+            <span class="course-tag">WebdriverIO</span>
+            <span class="course-tag">Appium 2.0</span>
+          </div>
+          <div class="course-title">Mobile App Automation with Appium 2.0 & WebdriverIO</div>
+          <div class="course-meta">
+            <span class="course-meta-item"><span class="ico">⏱</span> 9.5h</span>
+            <span class="course-meta-item"><span class="ico">📖</span> 95 lessons</span>
+            <span class="course-meta-item"><span class="ico">👥</span> 11K students</span>
+          </div>
+          <div class="course-price">
+            <span class="price-now">$19.99</span>
+            <span class="price-was">$130</span>
+            <span class="price-stars">⭐ 4.7</span>
+          </div>
+        </div>
+      </a>
+      <a href="#" class="course-card reveal" style="animation-delay:.2s">
+        <div class="course-thumb">
+          <div class="course-thumb-bg thumb-api">
+            <span style="filter:drop-shadow(0 0 24px rgba(79,255,176,.5))">⚡</span>
+          </div>
+          <div class="course-badge">NEW</div>
+        </div>
+        <div class="course-body">
+          <div class="course-tags">
+            <span class="course-tag">TypeScript</span>
+            <span class="course-tag">Supertest</span>
+            <span class="course-tag">REST API</span>
+          </div>
+          <div class="course-title">Master API Test Automation using TypeScript</div>
+          <div class="course-meta">
+            <span class="course-meta-item"><span class="ico">⏱</span> 8h</span>
+            <span class="course-meta-item"><span class="ico">📖</span> 70 lessons</span>
+            <span class="course-meta-item"><span class="ico">👥</span> 2K students</span>
+          </div>
+          <div class="course-price">
+            <span class="price-now">$19.99</span>
+            <span class="price-was">$130</span>
+            <span class="price-stars">⭐ 4.8</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAND -->
+<div class="stats-band">
+  <div class="stats-grid">
+    <div class="stat-box reveal">
+      <div class="stat-big"><b>4.8</b>★</div>
+      <div class="stat-sub">Average Rating</div>
+    </div>
+    <div class="stat-box reveal">
+      <div class="stat-big"><b>140</b>+</div>
+      <div class="stat-sub">Countries</div>
+    </div>
+    <div class="stat-box reveal">
+      <div class="stat-big"><b>50K</b>+</div>
+      <div class="stat-sub">Engineers</div>
+    </div>
+    <div class="stat-box reveal">
+      <div class="stat-big"><b>95</b>%</div>
+      <div class="stat-sub">Completion Rate</div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
 <section>
-  <h2>Contact</h2>
-  <p>Email: abhik99@gmail.com</p>
-  <p>LinkedIn: Add your link</p>
-  <p>GitHub: Add your repo</p>
+  <div class="container">
+    <div class="reviews-header reveal">
+      <div class="label-chip">Verified Outcomes</div>
+      <h2 class="sec-title">Loved by 50,000+ Engineers</h2>
+      <p class="sec-desc" style="margin:0 auto">Real feedback from manual testers, SDETs, and developers who transformed their careers.</p>
+    </div>
+  </div>
+  <div class="reviews-outer">
+    <div class="reviews-track">
+      <div class="review-card">
+        <div class="review-verified">VERIFIED</div>
+        <p class="review-text">"The Playwright course was exactly what I needed. I went from knowing nothing about Playwright to implementing it at my company within weeks."</p>
+        <div class="review-author">
+          <div class="review-avatar">L</div>
+          <div><div class="review-name">Laura M.</div><div class="review-role">QA Lead @ Tech Startup</div></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-verified">VERIFIED</div>
+        <p class="review-text">"Best mobile automation course out there! The Appium content covers real-world scenarios. Our team now has a robust mobile testing framework."</p>
+        <div class="review-author">
+          <div class="review-avatar">K</div>
+          <div><div class="review-name">Kunal S.</div><div class="review-role">Senior QA Engineer @ Enterprise Corp</div></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-verified">VERIFIED</div>
+        <p class="review-text">"The API testing course transformed how I approach backend testing. Clear explanations, hands-on projects, and production-ready code examples."</p>
+        <div class="review-author">
+          <div class="review-avatar">R</div>
+          <div><div class="review-name">Richard T.</div><div class="review-role">SDET @ Financial Services</div></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-verified">VERIFIED</div>
+        <p class="review-text">"I started with zero Playwright experience and now I'm testing UI and API scenarios with confidence. Highly recommended for anyone trying to level up."</p>
+        <div class="review-author">
+          <div class="review-avatar">L</div>
+          <div><div class="review-name">Lajos C.</div><div class="review-role">QA Engineer @ Telecom Company</div></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-verified">VERIFIED</div>
+        <p class="review-text">"I was able to build a real API test suite at work and present it to my team. Outstanding — never felt confident with API automation until now."</p>
+        <div class="review-author">
+          <div class="review-avatar">N</div>
+          <div><div class="review-name">Nauman</div><div class="review-role">Sr. QA Engineer @ Healthcare Startup</div></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-verified">VERIFIED</div>
+        <p class="review-text">"Coming from JavaScript dev, testing felt painful. This course made automation approachable and I integrated Playwright into our workflow within weeks."</p>
+        <div class="review-author">
+          <div class="review-avatar">D</div>
+          <div><div class="review-name">Daniel S.</div><div class="review-role">Software Developer @ FinTech Startup</div></div>
+        </div>
+      </div>
+      <!-- duplicate for seamless loop -->
+      <div class="review-card">
+        <div class="review-verified">VERIFIED</div>
+        <p class="review-text">"The Playwright course was exactly what I needed. I went from knowing nothing about Playwright to implementing it at my company within weeks."</p>
+        <div class="review-author">
+          <div class="review-avatar">L</div>
+          <div><div class="review-name">Laura M.</div><div class="review-role">QA Lead @ Tech Startup</div></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-verified">VERIFIED</div>
+        <p class="review-text">"Best mobile automation course out there! The Appium content covers real-world scenarios. Our team now has a robust mobile testing framework."</p>
+        <div class="review-author">
+          <div class="review-avatar">K</div>
+          <div><div class="review-name">Kunal S.</div><div class="review-role">Senior QA Engineer @ Enterprise Corp</div></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-verified">VERIFIED</div>
+        <p class="review-text">"The API testing course transformed how I approach backend testing. Clear explanations, hands-on projects, and production-ready code examples."</p>
+        <div class="review-author">
+          <div class="review-avatar">R</div>
+          <div><div class="review-name">Richard T.</div><div class="review-role">SDET @ Financial Services</div></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-verified">VERIFIED</div>
+        <p class="review-text">"Outstanding course! I was able to build a real API test suite at work and present it to my team. Never felt this confident before."</p>
+        <div class="review-author">
+          <div class="review-avatar">N</div>
+          <div><div class="review-name">Nauman</div><div class="review-role">Sr. QA Engineer @ Healthcare Startup</div></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-verified">VERIFIED</div>
+        <p class="review-text">"I started with zero Playwright experience and now test UI and API scenarios with confidence. Highly recommended for anyone trying to level up."</p>
+        <div class="review-author">
+          <div class="review-avatar">L</div>
+          <div><div class="review-name">Lajos C.</div><div class="review-role">QA Engineer @ Telecom Company</div></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-verified">VERIFIED</div>
+        <p class="review-text">"Coming from JavaScript dev, testing felt painful. This course made automation approachable — I integrated Playwright into our workflow within weeks."</p>
+        <div class="review-author">
+          <div class="review-avatar">D</div>
+          <div><div class="review-name">Daniel S.</div><div class="review-role">Software Developer @ FinTech Startup</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
+<!-- INSTRUCTOR -->
+<section class="instructor-section">
+  <div class="instructor-inner">
+    <div class="instructor-photo-wrap reveal">
+      <div class="instructor-photo">
+        <div class="instructor-photo-graphic"></div>
+        <div class="instructor-photo-placeholder">👨‍💻</div>
+        <div class="instructor-badge">
+          <div class="instructor-badge-num">10+</div>
+          <div class="instructor-badge-lbl">Years Exp</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="label-chip">Expert Instructor</div>
+      <div class="instructor-name">Dilpreet Johal</div>
+      <div class="instructor-role">Founder, SDET Unicorns Academy</div>
+      <p class="instructor-bio">I help QA engineers and developers move beyond manual testing and basic scripts into building automation that integrates with real engineering systems. After 10+ years inside high-growth North American teams leading automation across web, mobile, API, and CI/CD pipelines, I teach how modern engineering teams actually work.</p>
+      <ul class="instructor-bullets">
+        <li><span class="bullet-lime">→</span> How automation fits into real software delivery — not just tool tutorials</li>
+        <li><span class="bullet-lime">→</span> How to build maintainable frameworks used across teams</li>
+        <li><span class="bullet-lime">→</span> How to level up from QA to SDET through engineering practices</li>
+      </ul>
+      <a href="#courses" class="btn-primary btn-lg">Start Learning with Me</a>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section id="pricing">
+  <div class="container">
+    <div class="reveal" style="text-align:center;max-width:640px;margin:0 auto 0">
+      <div class="label-chip">Academy Benefits</div>
+      <h2 class="sec-title">Why Students Join<br>the Academy</h2>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card reveal">
+        <span class="benefit-icon">🏗️</span>
+        <div class="benefit-title">Built from Real Engineering Work</div>
+        <p class="benefit-desc">Courses are built from real automation work inside high-growth North American companies, not theoretical tutorials.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <span class="benefit-icon">🚀</span>
+        <div class="benefit-title">Goes Beyond Tools & Scripts</div>
+        <p class="benefit-desc">Learn frameworks, architecture, debugging, CI/CD, and how automation fits into modern software delivery.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <span class="benefit-icon">🗺️</span>
+        <div class="benefit-title">Always Know What to Learn Next</div>
+        <p class="benefit-desc">Suggested learning order removes guesswork so you don't wander tutorial sites for months trying to connect dots.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <span class="benefit-icon">🤝</span>
+        <div class="benefit-title">Skills That Map to Teams</div>
+        <p class="benefit-desc">Learn practices engineering teams actually depend on — improving reliability, speed, and collaboration.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <span class="benefit-icon">🔄</span>
+        <div class="benefit-title">New Content & Updates Included</div>
+        <p class="benefit-desc">Stay aligned with how the industry evolves as tools, languages, and best practices change — without paying separately.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <span class="benefit-icon">💬</span>
+        <div class="benefit-title">Support & Community Access</div>
+        <p class="benefit-desc">Discuss questions, projects, and real-world problems directly with the instructor and thousands of students.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-glow"></div>
+  <div class="cta-box">
+    <div class="cta-badge">
+      <span class="cta-badge-item">All courses included</span>
+      <span class="cta-badge-item">One-time payment</span>
+      <span class="cta-badge-item">Lifetime access</span>
+    </div>
+    <h2 class="cta-title">Ready to Level Up<br>Your <span>Skills?</span></h2>
+    <p class="cta-desc">Get instant access to the Academy dashboard and all course materials right after purchasing. Join 50,000+ engineers who levelled up their testing career.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-primary btn-xl">Start Learning Today</a>
+      <a href="#" class="btn-ghost btn-xl">View Pricing Plans</a>
+    </div>
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="nl-section">
+  <div class="nl-inner">
+    <div class="label-chip" style="display:inline-flex">Stay Updated</div>
+    <h3 class="nl-title">Weekly tips, tutorials &amp; resources</h3>
+    <p class="nl-desc">Get weekly tips, tutorials, and exclusive content delivered straight to your inbox. Join 5,000+ subscribers.</p>
+    <div class="nl-form">
+      <input class="nl-input" type="email" placeholder="your@email.com"/>
+      <button class="btn-primary" style="padding:12px 24px;border-radius:10px;font-size:14px">Subscribe</button>
+    </div>
+    <div class="nl-perks">
+      <span class="nl-perk">Weekly tutorials</span>
+      <span class="nl-perk">Exclusive discounts</span>
+      <span class="nl-perk">Free resources</span>
+      <span class="nl-perk">No spam, ever</span>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="margin-right:0">
+          <div class="nav-logo-icon">🦄</div>
+          SDETUnicorns
+        </a>
+        <p>Helping engineers level up their test automation skills — one course at a time.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#courses">Courses</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Courses</h4>
+        <ul>
+          <li><a href="#">Playwright Testing</a></li>
+          <li><a href="#">Mobile Automation</a></li>
+          <li><a href="#">API Test Automation</a></li>
+          <li><a href="#courses">All Courses</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+          <li><a href="mailto:contact@sdetunicorns.com">contact@sdetunicorns.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 SDET Unicorns Inc. All rights reserved.</span>
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── Scroll reveal ── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') });
+}, {threshold:.1, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ── Pipeline animation ── */
+let passCount = 0;
+const target = 95;
+const counter = setInterval(() => {
+  passCount = Math.min(passCount + Math.floor(Math.random()*3)+1, target);
+  document.getElementById('pass-count').textContent = passCount;
+  const bar = document.getElementById('test-bar');
+  bar.style.width = (passCount/target*100)+'%';
+  if(passCount >= target) {
+    clearInterval(counter);
+    const ts = document.getElementById('test-stage');
+    ts.classList.remove('active'); ts.classList.add('done');
+    document.getElementById('test-status').textContent = '✓ passed';
+    document.getElementById('test-status').className = 'pipe-status ok';
+    setTimeout(() => {
+      const ds = document.getElementById('deploy-stage');
+      ds.classList.add('active');
+      document.getElementById('deploy-status').textContent = '⚡ deploying';
+      document.getElementById('deploy-status').className = 'pipe-status running';
+      document.getElementById('deploy-bar').style.width = '100%';
+      setTimeout(() => {
+        ds.classList.remove('active'); ds.classList.add('done');
+        document.getElementById('deploy-status').textContent = '✓ live';
+        document.getElementById('deploy-status').className = 'pipe-status ok';
+        const is = document.getElementById('insight-stage');
+        is.classList.add('done');
+        document.getElementById('insight-status').textContent = '✓ ready';
+        document.getElementById('insight-status').className = 'pipe-status ok';
+        document.getElementById('insight-bar').style.width = '100%';
+      }, 2000);
+    }, 600);
+  }
+}, 80);
+
+/* ── Smooth scroll for anchor links ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href').slice(1);
+    if(!id) return;
+    const el = document.getElementById(id);
+    if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'}) }
+  });
+});
+</script>
 </body>
 </html>
