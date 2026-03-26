@@ -3,148 +3,187 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wedding Biodata</title>
+<title>Profile Biodata</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-    body {
-        font-family: 'Poppins', sans-serif;
-        margin: 0;
-        background: linear-gradient(135deg, #fff0f5, #f5f7fa);
-    }
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    background: #f1f3f6;
+}
 
-    .card {
-        max-width: 900px;
-        margin: 30px auto;
-        background: white;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    }
+/* Top Bar */
+.navbar {
+    background: #ff5a60;
+    color: white;
+    padding: 15px 20px;
+    font-size: 18px;
+    font-weight: 600;
+}
 
-    .header {
-        background: linear-gradient(to right, #b76e79, #ff9a9e);
-        color: white;
-        text-align: center;
-        padding: 30px 20px;
-    }
+/* Main Layout */
+.container {
+    max-width: 1000px;
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 20px;
+}
 
-    .header img {
-        width: 140px;
-        height: 140px;
-        border-radius: 50%;
-        border: 5px solid white;
-        object-fit: cover;
-        margin-bottom: 10px;
-    }
+/* Left Profile Card */
+.profile-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
 
-    .header h1 {
-        margin: 10px 0 5px;
-    }
+.profile-card img {
+    width: 140px;
+    height: 140px;
+    border-radius: 10px;
+    object-fit: cover;
+}
 
-    .section {
-        padding: 20px 30px;
-    }
+.profile-card h2 {
+    margin: 10px 0 5px;
+}
 
-    .section h2 {
-        color: #b76e79;
-        margin-bottom: 15px;
-    }
+.tag {
+    display: inline-block;
+    background: #ffe1e2;
+    color: #ff5a60;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
 
-    .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-    }
+/* Right Sections */
+.section {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
 
-    .item {
-        background: #f9f9f9;
-        padding: 12px;
-        border-radius: 10px;
-        transition: 0.3s;
-    }
+.section h3 {
+    margin-bottom: 15px;
+    color: #ff5a60;
+}
 
-    .item:hover {
-        background: #ffe4e1;
-        transform: scale(1.02);
-    }
+/* Info Grid */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
 
-    .full {
-        grid-column: span 2;
-    }
+.item {
+    background: #fafafa;
+    padding: 10px;
+    border-radius: 8px;
+}
 
-    .tag {
-        display: inline-block;
-        background: #ffe4e1;
-        color: #b76e79;
-        padding: 5px 10px;
-        border-radius: 20px;
-        margin-top: 5px;
-        font-size: 12px;
-    }
+/* Contact Highlight */
+.highlight {
+    background: #fff5f5;
+    border-left: 4px solid #ff5a60;
+}
 
-    @media(max-width: 600px) {
-        .grid {
-            grid-template-columns: 1fr;
-        }
+/* Button */
+.btn {
+    display: block;
+    margin-top: 15px;
+    padding: 10px;
+    background: #ff5a60;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+/* Mobile */
+@media(max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
     }
+}
 </style>
 </head>
 
 <body>
 
-<div class="card">
+<div class="navbar">💍 Matrimonial Profile</div>
 
-    <!-- Header -->
-    <div class="header">
+<div class="container">
+
+    <!-- LEFT PROFILE -->
+    <div class="profile-card">
         <img src="https://via.placeholder.com/150">
-        <h1>Your Name</h1>
-        <div class="tag">Looking for a Life Partner 💕</div>
+        <h2>Your Name</h2>
+        <div class="tag">Premium Member</div>
+
+        <p>📍 Panvel, Maharashtra</p>
+        <p>💼 Software Engineer</p>
+
+        <a href="#" class="btn">📞 Contact</a>
     </div>
 
-    <!-- Personal -->
-    <div class="section">
-        <h2>👤 Personal Details</h2>
-        <div class="grid">
-            <div class="item"><strong>DOB:</strong> DD/MM/YYYY</div>
-            <div class="item"><strong>Height:</strong> 5'8"</div>
-            <div class="item"><strong>Religion:</strong> Hindu</div>
-            <div class="item"><strong>Mother Tongue:</strong> Marathi</div>
-            <div class="item"><strong>Status:</strong> Unmarried</div>
-            <div class="item"><strong>Location:</strong> Panvel, Maharashtra</div>
-        </div>
-    </div>
+    <!-- RIGHT CONTENT -->
+    <div>
 
-    <!-- Career -->
-    <div class="section">
-        <h2>💼 Education & Career</h2>
-        <div class="grid">
-            <div class="item"><strong>Qualification:</strong> B.Tech</div>
-            <div class="item"><strong>Profession:</strong> Software Engineer</div>
-            <div class="item"><strong>Company:</strong> XYZ Company</div>
-            <div class="item"><strong>Experience:</strong> 4+ Years</div>
+        <!-- Basic Info -->
+        <div class="section">
+            <h3>Basic Details</h3>
+            <div class="grid">
+                <div class="item">Age: 28</div>
+                <div class="item">Height: 5'8"</div>
+                <div class="item">Religion: Hindu</div>
+                <div class="item">Mother Tongue: Marathi</div>
+                <div class="item">Marital Status: Unmarried</div>
+                <div class="item">City: Panvel</div>
+            </div>
         </div>
-    </div>
 
-    <!-- Family -->
-    <div class="section">
-        <h2>👨‍👩‍👧 Family Details</h2>
-        <div class="grid">
-            <div class="item"><strong>Father:</strong> Name</div>
-            <div class="item"><strong>Mother:</strong> Name</div>
-            <div class="item full"><strong>Siblings:</strong> Details</div>
+        <!-- Career -->
+        <div class="section">
+            <h3>Education & Career</h3>
+            <div class="grid">
+                <div class="item">Qualification: B.Tech</div>
+                <div class="item">Profession: Software Engineer</div>
+                <div class="item">Company: XYZ Pvt Ltd</div>
+                <div class="item">Income: ₹XX LPA</div>
+            </div>
         </div>
-    </div>
 
-    <!-- Contact -->
-    <div class="section">
-        <h2>📞 Contact</h2>
-        <div class="grid">
-            <div class="item"><strong>Phone:</strong> +91-XXXXXXXXXX</div>
-            <div class="item"><strong>Email:</strong> your@email.com</div>
-            <div class="item full"><strong>Address:</strong> Full Address</div>
+        <!-- Family -->
+        <div class="section">
+            <h3>Family Details</h3>
+            <div class="grid">
+                <div class="item">Father: Business</div>
+                <div class="item">Mother: Homemaker</div>
+                <div class="item">Siblings: 1 Sister</div>
+                <div class="item">Family Type: Nuclear</div>
+            </div>
         </div>
+
+        <!-- About -->
+        <div class="section">
+            <h3>About Me</h3>
+            <p>
+                I am a simple, career-oriented person with modern values and strong cultural roots.
+                Looking for a compatible life partner who is understanding and supportive.
+            </p>
+        </div>
+
+        <!-- Contact -->
+        <div class="section highlight">
+            <h3>Contact Details</h3>
+            <p>📞 +91-XXXXXXXXXX</p>
+            <p>📧 your@email.com</p>
+        </div>
+
     </div>
 
 </div>
