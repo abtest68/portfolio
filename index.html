@@ -1,77 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDET Portfolio | Java Automation Engineer</title>
-    <style>
-        :root { --bg-color: #121212; --text-color: #e0e0e0; --accent: #4CAF50; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 2rem; }
-        h1, h2, h3 { color: #ffffff; }
-        a { color: var(--accent); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        header { text-align: center; margin-bottom: 3rem; border-bottom: 1px solid #333; padding-bottom: 2rem; }
-        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
-        .skill-card, .project-card { background: #1e1e1e; padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--accent); margin-bottom: 1.5rem; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wedding Biodata</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        background: linear-gradient(135deg, #fff0f5, #f5f7fa);
+    }
+
+    .card {
+        max-width: 900px;
+        margin: 30px auto;
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .header {
+        background: linear-gradient(to right, #b76e79, #ff9a9e);
+        color: white;
+        text-align: center;
+        padding: 30px 20px;
+    }
+
+    .header img {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        border: 5px solid white;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+
+    .header h1 {
+        margin: 10px 0 5px;
+    }
+
+    .section {
+        padding: 20px 30px;
+    }
+
+    .section h2 {
+        color: #b76e79;
+        margin-bottom: 15px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .item {
+        background: #f9f9f9;
+        padding: 12px;
+        border-radius: 10px;
+        transition: 0.3s;
+    }
+
+    .item:hover {
+        background: #ffe4e1;
+        transform: scale(1.02);
+    }
+
+    .full {
+        grid-column: span 2;
+    }
+
+    .tag {
+        display: inline-block;
+        background: #ffe4e1;
+        color: #b76e79;
+        padding: 5px 10px;
+        border-radius: 20px;
+        margin-top: 5px;
+        font-size: 12px;
+    }
+
+    @media(max-width: 600px) {
+        .grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
 </head>
+
 <body>
 
-    <header>
-        <h1>[Your Name]</h1>
-        <h2>Software Development Engineer in Test (SDET)</h2>
-        <p>Java Specialist | BDD Framework Architect | API Automation Expert</p>
-        <p><a href="mailto:your.email@example.com">Contact Me</a> | <a href="https://github.com/yourusername">GitHub</a> | <a href="https://linkedin.com/in/yourusername">LinkedIn</a></p>
-    </header>
+<div class="card">
 
-    <section id="about">
-        <h2>About Me</h2>
-        <p>I build automated test ecosystems that ensure software quality at scale. My approach is rooted in the Shift-Left philosophy: catching bugs before they reach production by integrating REST Assured API testing and Selenium suites directly into the CI/CD pipeline.</p>
-    </section>
+    <!-- Header -->
+    <div class="header">
+        <img src="https://via.placeholder.com/150">
+        <h1>Your Name</h1>
+        <div class="tag">Looking for a Life Partner 💕</div>
+    </div>
 
-    <section id="skills" style="margin-top: 2rem;">
-        <h2>Technical Arsenal</h2>
-        <div class="skills-grid">
-            <div class="skill-card">
-                <h3>Languages & Core</h3>
-                <p>Java, SQL, Cosmos DB</p>
-            </div>
-            <div class="skill-card">
-                <h3>UI Automation & BDD</h3>
-                <p>Selenium WebDriver, TestNG, Cucumber (Gherkin)</p>
-            </div>
-            <div class="skill-card">
-                <h3>Framework Architecture</h3>
-                <p>Page Object Model (POM), Data-Driven, Hybrid</p>
-            </div>
-            <div class="skill-card">
-                <h3>API & DevOps</h3>
-                <p>REST APIs, Rest Assured, Postman, Jenkins, GitHub Actions</p>
-            </div>
+    <!-- Personal -->
+    <div class="section">
+        <h2>👤 Personal Details</h2>
+        <div class="grid">
+            <div class="item"><strong>DOB:</strong> DD/MM/YYYY</div>
+            <div class="item"><strong>Height:</strong> 5'8"</div>
+            <div class="item"><strong>Religion:</strong> Hindu</div>
+            <div class="item"><strong>Mother Tongue:</strong> Marathi</div>
+            <div class="item"><strong>Status:</strong> Unmarried</div>
+            <div class="item"><strong>Location:</strong> Panvel, Maharashtra</div>
         </div>
-    </section>
+    </div>
 
-    <section id="projects" style="margin-top: 2rem;">
-        <h2>Featured Automation Projects</h2>
-        
-        <div class="project-card">
-            <h3>Enterprise Web Automation Framework</h3>
-            <p><strong>Stack:</strong> Java, Selenium, TestNG, POM</p>
-            <p>Designed a highly maintainable Hybrid framework using the Page Object Model and Data-Driven testing (JSON/Excel), reducing script maintenance time by 40%.</p>
-            <a href="#">View on GitHub →</a>
+    <!-- Career -->
+    <div class="section">
+        <h2>💼 Education & Career</h2>
+        <div class="grid">
+            <div class="item"><strong>Qualification:</strong> B.Tech</div>
+            <div class="item"><strong>Profession:</strong> Software Engineer</div>
+            <div class="item"><strong>Company:</strong> XYZ Company</div>
+            <div class="item"><strong>Experience:</strong> 4+ Years</div>
         </div>
+    </div>
 
-        <div class="project-card">
-            <h3>BDD API Test Suite</h3>
-            <p><strong>Stack:</strong> Rest Assured, Cucumber, Jenkins</p>
-            <p>Developed a BDD-style API framework featuring automated JSON Schema Validation, integrated into a CI/CD pipeline for nightly Regression runs.</p>
-            <a href="#">View on GitHub →</a>
+    <!-- Family -->
+    <div class="section">
+        <h2>👨‍👩‍👧 Family Details</h2>
+        <div class="grid">
+            <div class="item"><strong>Father:</strong> Name</div>
+            <div class="item"><strong>Mother:</strong> Name</div>
+            <div class="item full"><strong>Siblings:</strong> Details</div>
         </div>
-    </section>
+    </div>
 
-    <footer style="margin-top: 3rem; text-align: center; font-size: 0.9rem; color: #888;">
-        <p>© 2026 [Your Name]. Built with code and tested rigorously.</p>
-    </footer>
+    <!-- Contact -->
+    <div class="section">
+        <h2>📞 Contact</h2>
+        <div class="grid">
+            <div class="item"><strong>Phone:</strong> +91-XXXXXXXXXX</div>
+            <div class="item"><strong>Email:</strong> your@email.com</div>
+            <div class="item full"><strong>Address:</strong> Full Address</div>
+        </div>
+    </div>
+
+</div>
 
 </body>
 </html>
