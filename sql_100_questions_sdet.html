@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>100 SQL Questions for SDET</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161e;
+    --surface2: #1a1e28;
+    --border: #252a36;
+    --accent: #4fffb0;
+    --accent2: #7c6fff;
+    --accent3: #ff6b6b;
+    --accent4: #ffb347;
+    --text: #e8ecf4;
+    --muted: #7a8299;
+    --code-bg: #0a0c10;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 48px 32px 32px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #0d0f14 60%, #131826);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 600px 300px at 80% 50%, rgba(76,255,176,.06), transparent);
+    pointer-events: none;
+  }
+  .header-top { display: flex; align-items: flex-start; gap: 20px; flex-wrap: wrap; }
+  .header-badge {
+    background: var(--accent);
+    color: #0d0f14;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: inline-block;
+  }
+  header h1 {
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -.02em;
+  }
+  header h1 span { color: var(--accent); }
+  .header-sub { margin-top: 10px; color: var(--muted); font-size: 15px; max-width: 560px; line-height: 1.6; }
+  .stats-row { display: flex; gap: 24px; margin-top: 24px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 28px; font-weight: 800; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+  .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-top: 2px; }
+
+  /* ── CONTROLS ── */
+  .controls {
+    padding: 20px 32px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .search-wrap { position: relative; flex: 1; min-width: 200px; max-width: 340px; }
+  .search-wrap input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 12px 9px 36px;
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .search-wrap input:focus { border-color: var(--accent); }
+  .search-wrap::before {
+    content: '⌕';
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 16px;
+    pointer-events: none;
+  }
+  .filter-btn {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); color: #0d0f14; border-color: var(--accent); }
+  .progress-wrap { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .progress-label { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .progress-bar { width: 120px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .4s ease; }
+
+  /* ── MAIN GRID ── */
+  main { padding: 28px 32px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 32px 0 16px;
+  }
+  .section-header:first-child { margin-top: 0; }
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--muted);
+  }
+  .section-line { flex: 1; height: 1px; background: var(--border); }
+  .section-count {
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* ── QUESTION CARD ── */
+  .q-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+  .q-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: border-color .2s, background .2s, transform .1s;
+    position: relative;
+    overflow: hidden;
+  }
+  .q-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--cat-color, var(--accent));
+    border-radius: 3px 0 0 3px;
+    opacity: .6;
+    transition: opacity .2s;
+  }
+  .q-card:hover { border-color: var(--cat-color, var(--accent)); background: var(--surface2); transform: translateY(-1px); }
+  .q-card:hover::before { opacity: 1; }
+  .q-card.solved { background: var(--surface2); }
+  .q-card.solved::after {
+    content: '✓';
+    position: absolute;
+    right: 14px;
+    top: 14px;
+    width: 20px; height: 20px;
+    background: var(--accent);
+    color: #0d0f14;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    line-height: 20px;
+    text-align: center;
+  }
+  .q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .diff-badge {
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .diff-easy   { background: rgba(79,255,176,.12); color: #4fffb0; }
+  .diff-medium { background: rgba(255,179,71,.12);  color: #ffb347; }
+  .diff-hard   { background: rgba(255,107,107,.12); color: #ff6b6b; }
+  .q-title { font-size: 14px; font-weight: 600; line-height: 1.45; margin-bottom: 6px; }
+  .q-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .q-tag {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: var(--surface2);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.75);
+    backdrop-filter: blur(4px);
+    z-index: 500;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px 16px;
+    overflow-y: auto;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    max-width: 740px;
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+  }
+  .modal-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .modal-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+  .modal-header-text { flex: 1; }
+  .modal-title { font-size: 18px; font-weight: 700; line-height: 1.35; margin-bottom: 8px; }
+  .modal-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+  .modal-close {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 22px;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+    transition: color .15s;
+    margin-top: -2px;
+  }
+  .modal-close:hover { color: var(--text); }
+  .modal-body { padding: 20px 24px; }
+  .modal-section { margin-bottom: 18px; }
+  .modal-section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--muted);
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .modal-text { font-size: 14px; line-height: 1.7; color: #c8cdd8; }
+  pre.code-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    overflow-x: auto;
+    color: #c8cdd8;
+    tab-size: 2;
+  }
+  .kw  { color: #7c6fff; font-weight: 600; }
+  .str { color: #4fffb0; }
+  .cm  { color: #4a5468; font-style: italic; }
+  .fn  { color: #ffb347; }
+  .num { color: #ff6b6b; }
+  .tip-box {
+    background: rgba(124,111,255,.1);
+    border: 1px solid rgba(124,111,255,.25);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #b0aaf5;
+    line-height: 1.6;
+    margin-top: 12px;
+  }
+  .tip-box strong { color: var(--accent2); }
+  .modal-footer {
+    padding: 14px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .modal-nav { display: flex; gap: 8px; }
+  .btn {
+    padding: 9px 18px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all .15s;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-accent {
+    background: var(--accent);
+    color: #0d0f14;
+    border-color: var(--accent);
+  }
+  .btn-accent:hover { background: #3fe8a0; border-color: #3fe8a0; color: #0d0f14; }
+  .empty { text-align: center; color: var(--muted); padding: 60px 20px; font-size: 15px; }
+
+  @media (max-width: 600px) {
+    header, main { padding: 24px 16px; }
+    .controls { padding: 14px 16px; }
+    .q-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">SDET Interview Prep</div>
+  <h1>100 SQL Questions<br><span>for SDETs</span></h1>
+  <p class="header-sub">Complete question bank covering data validation, test setup/teardown, joins, aggregations, window functions, and more.</p>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">100</div><div class="stat-label">Questions</div></div>
+    <div class="stat"><div class="stat-num" id="solved-count">0</div><div class="stat-label">Solved</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-label">Categories</div></div>
+    <div class="stat"><div class="stat-num">3</div><div class="stat-label">Difficulty levels</div></div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <input type="text" id="search" placeholder="Search questions…" oninput="renderAll()"/>
+  </div>
+  <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">All</button>
+  <button class="filter-btn" data-filter="easy" onclick="setFilter('easy',this)">Easy</button>
+  <button class="filter-btn" data-filter="medium" onclick="setFilter('medium',this)">Medium</button>
+  <button class="filter-btn" data-filter="hard" onclick="setFilter('hard',this)">Hard</button>
+  <button class="filter-btn" data-filter="unsolved" onclick="setFilter('unsolved',this)">Unsolved</button>
+  <div class="progress-wrap">
+    <span class="progress-label" id="progress-label">0 / 100</span>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+</div>
+
+<main id="main-content"></main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <div class="modal-header">
+      <div class="modal-num" id="m-num"></div>
+      <div class="modal-header-text">
+        <div class="modal-title" id="m-title"></div>
+        <div class="modal-badges" id="m-badges"></div>
+      </div>
+      <button class="modal-close" onclick="closeModalDirect()">×</button>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-accent" id="m-solve-btn" onclick="toggleSolve()">Mark as Solved</button>
+      <div class="modal-nav">
+        <button class="btn" onclick="prevQ()">← Prev</button>
+        <button class="btn" onclick="nextQ()">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CATEGORIES = {
+  'Basic SELECT':    { color: '#4fffb0', short: 'SELECT' },
+  'Filtering':       { color: '#7c6fff', short: 'WHERE'  },
+  'Joins':           { color: '#ffb347', short: 'JOIN'   },
+  'Aggregation':     { color: '#ff6b6b', short: 'AGG'    },
+  'Subqueries':      { color: '#4dc8ff', short: 'SUB'    },
+  'Data Validation': { color: '#f06fff', short: 'VALID'  },
+  'Test Data Mgmt':  { color: '#4fffb0', short: 'SETUP'  },
+  'Advanced':        { color: '#ff8c6b', short: 'ADV'    },
+};
+
+const Q = [
+  // ── BASIC SELECT (1–12) ──
+  { id:1,  cat:'Basic SELECT', diff:'easy',   title:'Select all columns from a table',
+    desc:'Write a query to retrieve every column and row from the <code>users</code> table.',
+    sql:`<span class="kw">SELECT</span> * <span class="kw">FROM</span> users;`,
+    tip:'Use <code>SELECT *</code> sparingly in production — always prefer explicit column names to avoid surprises when schemas change.' },
+  { id:2,  cat:'Basic SELECT', diff:'easy',   title:'Select specific columns',
+    desc:'Retrieve only <code>id</code>, <code>name</code>, and <code>email</code> from the <code>users</code> table.',
+    sql:`<span class="kw">SELECT</span> id, name, email\n<span class="kw">FROM</span>   users;`,
+    tip:'Explicit column selection is a best practice — it documents intent and avoids accidental exposure of sensitive fields.' },
+  { id:3,  cat:'Basic SELECT', diff:'easy',   title:'Alias a column',
+    desc:'Select <code>first_name</code> aliased as <code>name</code> and <code>created_at</code> aliased as <code>registered</code>.',
+    sql:`<span class="kw">SELECT</span> first_name <span class="kw">AS</span> name,\n       created_at <span class="kw">AS</span> registered\n<span class="kw">FROM</span>   users;` },
+  { id:4,  cat:'Basic SELECT', diff:'easy',   title:'Select distinct values',
+    desc:'Find all unique statuses present in the <code>orders</code> table.',
+    sql:`<span class="kw">SELECT DISTINCT</span> status\n<span class="kw">FROM</span>   orders;`,
+    tip:'Useful in test validation to discover enum values actually present in the DB vs expected values.' },
+  { id:5,  cat:'Basic SELECT', diff:'easy',   title:'Limit result rows',
+    desc:'Fetch only the first 10 rows from the <code>products</code> table.',
+    sql:`<span class="kw">SELECT</span> * <span class="kw">FROM</span> products\n<span class="kw">LIMIT</span>  <span class="num">10</span>;` },
+  { id:6,  cat:'Basic SELECT', diff:'easy',   title:'Order results ascending & descending',
+    desc:'Select all orders sorted by <code>total</code> descending, then <code>id</code> ascending.',
+    sql:`<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders\n<span class="kw">ORDER BY</span> total <span class="kw">DESC</span>, id <span class="kw">ASC</span>;` },
+  { id:7,  cat:'Basic SELECT', diff:'easy',   title:'Count total rows in a table',
+    desc:'Return the total number of rows in the <code>users</code> table.',
+    sql:`<span class="kw">SELECT COUNT</span>(*) <span class="kw">AS</span> total_users\n<span class="kw">FROM</span>   users;` },
+  { id:8,  cat:'Basic SELECT', diff:'easy',   title:'Select with calculated column',
+    desc:'Show each order\'s <code>id</code>, <code>price</code>, <code>quantity</code>, and compute <code>line_total</code>.',
+    sql:`<span class="kw">SELECT</span> id,\n       price,\n       quantity,\n       price * quantity <span class="kw">AS</span> line_total\n<span class="kw">FROM</span>   order_items;` },
+  { id:9,  cat:'Basic SELECT', diff:'easy',   title:'Use COALESCE to handle NULLs',
+    desc:'Return <code>phone</code>, substituting <code>"N/A"</code> wherever it is NULL.',
+    sql:`<span class="kw">SELECT</span> id, name,\n       <span class="fn">COALESCE</span>(phone, <span class="str">'N/A'</span>) <span class="kw">AS</span> phone\n<span class="kw">FROM</span>   users;`,
+    tip:'COALESCE is invaluable when asserting that optional fields fall back to safe defaults.' },
+  { id:10, cat:'Basic SELECT', diff:'easy',   title:'String concatenation',
+    desc:'Combine <code>first_name</code> and <code>last_name</code> into a single <code>full_name</code> column.',
+    sql:`<span class="kw">SELECT</span> <span class="fn">CONCAT</span>(first_name, <span class="str">' '</span>, last_name) <span class="kw">AS</span> full_name\n<span class="kw">FROM</span>   users;\n\n<span class="cm">-- PostgreSQL alternative:</span>\n<span class="kw">SELECT</span> first_name || <span class="str">' '</span> || last_name <span class="kw">AS</span> full_name\n<span class="kw">FROM</span>   users;` },
+  { id:11, cat:'Basic SELECT', diff:'easy',   title:'Select rows using IN list',
+    desc:'Fetch users whose <code>role</code> is either <code>"admin"</code> or <code>"tester"</code>.',
+    sql:`<span class="kw">SELECT</span> * <span class="kw">FROM</span> users\n<span class="kw">WHERE</span>  role <span class="kw">IN</span> (<span class="str">'admin'</span>, <span class="str">'tester'</span>);` },
+  { id:12, cat:'Basic SELECT', diff:'easy',   title:'Paginate results with OFFSET',
+    desc:'Retrieve the second page of results (10 per page) from the <code>products</code> table.',
+    sql:`<span class="kw">SELECT</span> * <span class="kw">FROM</span> products\n<span class="kw">ORDER BY</span> id\n<span class="kw">LIMIT</span>  <span class="num">10</span> <span class="kw">OFFSET</span> <span class="num">10</span>;` },
+
+  // ── FILTERING (13–24) ──
+  { id:13, cat:'Filtering', diff:'easy',   title:'Filter by date range',
+    desc:'Find all orders placed between Jan 1 and Jan 31, 2024.',
+    sql:`<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders\n<span class="kw">WHERE</span>  created_at <span class="kw">BETWEEN</span> <span class="str">'2024-01-01'</span>\n                    <span class="kw">AND</span>     <span class="str">'2024-01-31 23:59:59'</span>;`,
+    tip:'Always use the full datetime for the end bound to avoid off-by-one errors at midnight.' },
+  { id:14, cat:'Filtering', diff:'easy',   title:'Filter with LIKE pattern',
+    desc:'Find all users whose email ends with <code>@gmail.com</code>.',
+    sql:`<span class="kw">SELECT</span> * <span class="kw">FROM</span> users\n<span class="kw">WHERE</span>  email <span class="kw">LIKE</span> <span class="str">'%@gmail.com'</span>;` },
+  { id:15, cat:'Filtering', diff:'easy',   title:'Find NULL values',
+    desc:'Retrieve all users who have not provided a phone number.',
+    sql:`<span class="kw">SELECT</span> id, name, email\n<span class="kw">FROM</span>   users\n<span class="kw">WHERE</span>  phone <span class="kw">IS NULL</span>;`,
+    tip:'A key SDET validation: after a registration flow, confirm mandatory fields are NOT NULL.' },
+  { id:16, cat:'Filtering', diff:'easy',   title:'Combine AND / OR conditions',
+    desc:'Find active users who registered after 2023-01-01 OR have an admin role.',
+    sql:`<span class="kw">SELECT</span> * <span class="kw">FROM</span> users\n<span class="kw">WHERE</span>  (status = <span class="str">'active'</span> <span class="kw">AND</span> created_at > <span class="str">'2023-01-01'</span>)\n   <span class="kw">OR</span>  role = <span class="str">'admin'</span>;` },
+  { id:17, cat:'Filtering', diff:'easy',   title:'Negate a condition with NOT',
+    desc:'Retrieve all products that are NOT discontinued.',
+    sql:`<span class="kw">SELECT</span> * <span class="kw">FROM</span> products\n<span class="kw">WHERE</span>  <span class="kw">NOT</span> is_discontinued;` },
+  { id:18, cat:'Filtering', diff:'medium', title:'Filter with a subquery in WHERE',
+    desc:'Find orders placed by users who have the "premium" subscription tier.',
+    sql:`<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders\n<span class="kw">WHERE</span>  user_id <span class="kw">IN</span> (\n  <span class="kw">SELECT</span> id <span class="kw">FROM</span> users\n  <span class="kw">WHERE</span>  tier = <span class="str">'premium'</span>\n);` },
+  { id:19, cat:'Filtering', diff:'medium', title:'Filter using CASE expression',
+    desc:'Classify orders as "high", "medium", or "low" value and return only high-value ones.',
+    sql:`<span class="kw">SELECT</span> * <span class="kw">FROM</span> (\n  <span class="kw">SELECT</span> id, total,\n    <span class="kw">CASE WHEN</span> total > <span class="num">500</span>  <span class="kw">THEN</span> <span class="str">'high'</span>\n         <span class="kw">WHEN</span> total > <span class="num">100</span>  <span class="kw">THEN</span> <span class="str">'medium'</span>\n         <span class="kw">ELSE</span> <span class="str">'low'</span>\n    <span class="kw">END</span> <span class="kw">AS</span> value_tier\n  <span class="kw">FROM</span> orders\n) t\n<span class="kw">WHERE</span> value_tier = <span class="str">'high'</span>;` },
+  { id:20, cat:'Filtering', diff:'easy',   title:'Filter by multiple values with NOT IN',
+    desc:'Find products that are not in categories 1, 2, or 3.',
+    sql:`<span class="kw">SELECT</span> * <span class="kw">FROM</span> products\n<span class="kw">WHERE</span>  category_id <span class="kw">NOT IN</span> (<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>);`,
+    tip:'Caution: NOT IN returns no rows if ANY value in the list is NULL. Prefer NOT EXISTS for safety.' },
+  { id:21, cat:'Filtering', diff:'medium', title:'Filter by most recent record per group',
+    desc:'Retrieve only the most recent order for each user.',
+    sql:`<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders o\n<span class="kw">WHERE</span>  created_at = (\n  <span class="kw">SELECT MAX</span>(created_at)\n  <span class="kw">FROM</span>   orders\n  <span class="kw">WHERE</span>  user_id = o.user_id\n);` },
+  { id:22, cat:'Filtering', diff:'easy',   title:'Filter text with ILIKE (case-insensitive)',
+    desc:'Find all products whose name contains "phone" regardless of case (PostgreSQL).',
+    sql:`<span class="kw">SELECT</span> * <span class="kw">FROM</span> products\n<span class="kw">WHERE</span>  name <span class="kw">ILIKE</span> <span class="str">'%phone%'</span>;\n\n<span class="cm">-- MySQL equivalent:</span>\n<span class="kw">WHERE</span> <span class="fn">LOWER</span>(name) <span class="kw">LIKE</span> <span class="str">'%phone%'</span>;` },
+  { id:23, cat:'Filtering', diff:'medium', title:'EXISTS vs IN — use EXISTS for large datasets',
+    desc:'Find users who have placed at least one order using EXISTS.',
+    sql:`<span class="kw">SELECT</span> id, name <span class="kw">FROM</span> users u\n<span class="kw">WHERE EXISTS</span> (\n  <span class="kw">SELECT</span> <span class="num">1</span> <span class="kw">FROM</span> orders o\n  <span class="kw">WHERE</span>  o.user_id = u.id\n);`,
+    tip:'EXISTS short-circuits on first match — often faster than IN on large result sets.' },
+  { id:24, cat:'Filtering', diff:'medium', title:'Filter on aggregated data with HAVING',
+    desc:'Find customers who have placed more than 5 orders.',
+    sql:`<span class="kw">SELECT</span> user_id, <span class="kw">COUNT</span>(*) <span class="kw">AS</span> order_count\n<span class="kw">FROM</span>   orders\n<span class="kw">GROUP BY</span> user_id\n<span class="kw">HAVING COUNT</span>(*) > <span class="num">5</span>;` },
+
+  // ── JOINS (25–37) ──
+  { id:25, cat:'Joins', diff:'easy',   title:'INNER JOIN two tables',
+    desc:'Get all orders along with the name of the user who placed them.',
+    sql:`<span class="kw">SELECT</span> o.id, u.name, o.total\n<span class="kw">FROM</span>   orders o\n<span class="kw">JOIN</span>   users  u <span class="kw">ON</span> o.user_id = u.id;` },
+  { id:26, cat:'Joins', diff:'easy',   title:'LEFT JOIN to find missing records',
+    desc:'List all users and their orders; include users with no orders (showing NULL).',
+    sql:`<span class="kw">SELECT</span> u.id, u.name, o.id <span class="kw">AS</span> order_id\n<span class="kw">FROM</span>   users u\n<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> u.id = o.user_id;`,
+    tip:'Critical validation pattern: after an order creation flow, confirm the join returns a non-NULL order_id.' },
+  { id:27, cat:'Joins', diff:'medium', title:'Find users with NO orders (anti-join)',
+    desc:'Return users who have never placed an order.',
+    sql:`<span class="kw">SELECT</span> u.id, u.name\n<span class="kw">FROM</span>   users u\n<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> u.id = o.user_id\n<span class="kw">WHERE</span>  o.id <span class="kw">IS NULL</span>;` },
+  { id:28, cat:'Joins', diff:'medium', title:'Three-table JOIN',
+    desc:'Retrieve order line items with product names and the buyer\'s email.',
+    sql:`<span class="kw">SELECT</span> u.email, p.name, oi.quantity, oi.price\n<span class="kw">FROM</span>   order_items oi\n<span class="kw">JOIN</span>   orders   o <span class="kw">ON</span> oi.order_id  = o.id\n<span class="kw">JOIN</span>   users    u <span class="kw">ON</span> o.user_id    = u.id\n<span class="kw">JOIN</span>   products p <span class="kw">ON</span> oi.product_id = p.id;` },
+  { id:29, cat:'Joins', diff:'medium', title:'Self JOIN for manager hierarchy',
+    desc:'List every employee alongside their manager\'s name.',
+    sql:`<span class="kw">SELECT</span> e.name <span class="kw">AS</span> employee,\n       m.name <span class="kw">AS</span> manager\n<span class="kw">FROM</span>   employees e\n<span class="kw">LEFT JOIN</span> employees m <span class="kw">ON</span> e.manager_id = m.id;` },
+  { id:30, cat:'Joins', diff:'medium', title:'FULL OUTER JOIN',
+    desc:'Show all records from both <code>table_a</code> and <code>table_b</code>, matching where possible.',
+    sql:`<span class="kw">SELECT</span> a.id, b.id\n<span class="kw">FROM</span>   table_a a\n<span class="kw">FULL OUTER JOIN</span> table_b b <span class="kw">ON</span> a.id = b.a_id;\n\n<span class="cm">-- MySQL (no FULL OUTER JOIN) simulation:</span>\n<span class="kw">SELECT</span> a.id, b.id <span class="kw">FROM</span> a <span class="kw">LEFT JOIN</span> b <span class="kw">ON</span> a.id=b.a_id\n<span class="kw">UNION</span>\n<span class="kw">SELECT</span> a.id, b.id <span class="kw">FROM</span> a <span class="kw">RIGHT JOIN</span> b <span class="kw">ON</span> a.id=b.a_id;` },
+  { id:31, cat:'Joins', diff:'easy',   title:'CROSS JOIN (cartesian product)',
+    desc:'Generate all combinations of sizes and colours for a product variant table.',
+    sql:`<span class="kw">SELECT</span> s.size, c.colour\n<span class="kw">FROM</span>   sizes s\n<span class="kw">CROSS JOIN</span> colours c;` },
+  { id:32, cat:'Joins', diff:'medium', title:'JOIN with aggregate',
+    desc:'For each user, show their name and total amount spent across all orders.',
+    sql:`<span class="kw">SELECT</span> u.name, <span class="fn">SUM</span>(o.total) <span class="kw">AS</span> total_spent\n<span class="kw">FROM</span>   users u\n<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> u.id = o.user_id\n<span class="kw">GROUP BY</span> u.id, u.name;` },
+  { id:33, cat:'Joins', diff:'hard',   title:'Find orphaned FK records',
+    desc:'Find all <code>order_items</code> that reference a product which no longer exists.',
+    sql:`<span class="kw">SELECT</span> oi.*\n<span class="kw">FROM</span>   order_items oi\n<span class="kw">LEFT JOIN</span> products p <span class="kw">ON</span> oi.product_id = p.id\n<span class="kw">WHERE</span>  p.id <span class="kw">IS NULL</span>;`,
+    tip:'A must-run check after any product deletion in regression testing to ensure referential integrity.' },
+  { id:34, cat:'Joins', diff:'medium', title:'JOIN on multiple conditions',
+    desc:'Match shipments to orders where both <code>order_id</code> and <code>warehouse_id</code> match.',
+    sql:`<span class="kw">SELECT</span> o.id, s.tracking_no\n<span class="kw">FROM</span>   orders o\n<span class="kw">JOIN</span>   shipments s\n  <span class="kw">ON</span>  s.order_id     = o.id\n  <span class="kw">AND</span> s.warehouse_id = o.warehouse_id;` },
+  { id:35, cat:'Joins', diff:'hard',   title:'Join vs Subquery performance consideration',
+    desc:'Rewrite a correlated subquery as a JOIN for better performance.',
+    sql:`<span class="cm">-- Slower (correlated subquery):</span>\n<span class="kw">SELECT</span> u.*, (\n  <span class="kw">SELECT COUNT</span>(*) <span class="kw">FROM</span> orders <span class="kw">WHERE</span> user_id = u.id\n) <span class="kw">AS</span> cnt\n<span class="kw">FROM</span> users u;\n\n<span class="cm">-- Faster (JOIN + aggregate):</span>\n<span class="kw">SELECT</span> u.*, <span class="fn">COALESCE</span>(c.cnt, <span class="num">0</span>) <span class="kw">AS</span> cnt\n<span class="kw">FROM</span>   users u\n<span class="kw">LEFT JOIN</span> (\n  <span class="kw">SELECT</span> user_id, <span class="kw">COUNT</span>(*) cnt\n  <span class="kw">FROM</span>   orders <span class="kw">GROUP BY</span> user_id\n) c <span class="kw">ON</span> u.id = c.user_id;` },
+  { id:36, cat:'Joins', diff:'medium', title:'Verify data consistency across two tables',
+    desc:'Confirm every <code>payment</code> row maps to a valid, existing <code>order</code>.',
+    sql:`<span class="kw">SELECT</span> p.id <span class="kw">AS</span> payment_id, p.order_id\n<span class="kw">FROM</span>   payments p\n<span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> p.order_id = o.id\n<span class="kw">WHERE</span>  o.id <span class="kw">IS NULL</span>;\n<span class="cm">-- Expected: 0 rows (all payments have valid orders)</span>` },
+  { id:37, cat:'Joins', diff:'hard',   title:'Multi-level self JOIN for org tree',
+    desc:'Show a three-level org chart: employee → manager → director.',
+    sql:`<span class="kw">SELECT</span>\n  e.name  <span class="kw">AS</span> employee,\n  m.name  <span class="kw">AS</span> manager,\n  d.name  <span class="kw">AS</span> director\n<span class="kw">FROM</span>   employees e\n<span class="kw">LEFT JOIN</span> employees m <span class="kw">ON</span> e.manager_id = m.id\n<span class="kw">LEFT JOIN</span> employees d <span class="kw">ON</span> m.manager_id = d.id;` },
+
+  // ── AGGREGATION (38–50) ──
+  { id:38, cat:'Aggregation', diff:'easy',   title:'SUM of a numeric column',
+    desc:'Calculate the total revenue from all completed orders.',
+    sql:`<span class="kw">SELECT SUM</span>(total) <span class="kw">AS</span> revenue\n<span class="kw">FROM</span>   orders\n<span class="kw">WHERE</span>  status = <span class="str">'completed'</span>;` },
+  { id:39, cat:'Aggregation', diff:'easy',   title:'AVG, MIN, MAX',
+    desc:'Find the average, minimum, and maximum order total.',
+    sql:`<span class="kw">SELECT</span>\n  <span class="fn">AVG</span>(total) <span class="kw">AS</span> avg_total,\n  <span class="fn">MIN</span>(total) <span class="kw">AS</span> min_total,\n  <span class="fn">MAX</span>(total) <span class="kw">AS</span> max_total\n<span class="kw">FROM</span> orders;` },
+  { id:40, cat:'Aggregation', diff:'easy',   title:'GROUP BY single column',
+    desc:'Count the number of orders for each status.',
+    sql:`<span class="kw">SELECT</span> status, <span class="kw">COUNT</span>(*) <span class="kw">AS</span> cnt\n<span class="kw">FROM</span>   orders\n<span class="kw">GROUP BY</span> status;`,
+    tip:'After running a state-transition workflow, use GROUP BY status to assert the right distribution.' },
+  { id:41, cat:'Aggregation', diff:'medium', title:'GROUP BY multiple columns',
+    desc:'Count orders grouped by <code>status</code> and <code>payment_method</code>.',
+    sql:`<span class="kw">SELECT</span> status, payment_method, <span class="kw">COUNT</span>(*) <span class="kw">AS</span> cnt\n<span class="kw">FROM</span>   orders\n<span class="kw">GROUP BY</span> status, payment_method\n<span class="kw">ORDER BY</span> cnt <span class="kw">DESC</span>;` },
+  { id:42, cat:'Aggregation', diff:'medium', title:'HAVING to filter groups',
+    desc:'Find products that have been ordered more than 100 times total.',
+    sql:`<span class="kw">SELECT</span> product_id, <span class="fn">SUM</span>(quantity) <span class="kw">AS</span> total_sold\n<span class="kw">FROM</span>   order_items\n<span class="kw">GROUP BY</span> product_id\n<span class="kw">HAVING SUM</span>(quantity) > <span class="num">100</span>;` },
+  { id:43, cat:'Aggregation', diff:'medium', title:'COUNT DISTINCT',
+    desc:'Find the number of unique users who placed an order this month.',
+    sql:`<span class="kw">SELECT COUNT</span>(<span class="kw">DISTINCT</span> user_id) <span class="kw">AS</span> unique_buyers\n<span class="kw">FROM</span>   orders\n<span class="kw">WHERE</span>  created_at >= <span class="fn">DATE_TRUNC</span>(<span class="str">'month'</span>, <span class="fn">NOW</span>());` },
+  { id:44, cat:'Aggregation', diff:'medium', title:'Conditional COUNT with CASE',
+    desc:'Count active and inactive users in one query.',
+    sql:`<span class="kw">SELECT</span>\n  <span class="fn">COUNT</span>(<span class="kw">CASE WHEN</span> status=<span class="str">'active'</span>   <span class="kw">THEN</span> <span class="num">1</span> <span class="kw">END</span>) <span class="kw">AS</span> active,\n  <span class="fn">COUNT</span>(<span class="kw">CASE WHEN</span> status=<span class="str">'inactive'</span> <span class="kw">THEN</span> <span class="num">1</span> <span class="kw">END</span>) <span class="kw">AS</span> inactive\n<span class="kw">FROM</span>   users;` },
+  { id:45, cat:'Aggregation', diff:'hard',   title:'Running total with SUM OVER',
+    desc:'Calculate a running total of order amounts sorted by date.',
+    sql:`<span class="kw">SELECT</span> id, created_at, total,\n  <span class="fn">SUM</span>(total) <span class="kw">OVER</span> (\n    <span class="kw">ORDER BY</span> created_at\n    <span class="kw">ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW</span>\n  ) <span class="kw">AS</span> running_total\n<span class="kw">FROM</span> orders;` },
+  { id:46, cat:'Aggregation', diff:'medium', title:'Percentage of total',
+    desc:'Show each status as a percentage of all orders.',
+    sql:`<span class="kw">SELECT</span> status,\n  <span class="kw">COUNT</span>(*) <span class="kw">AS</span> cnt,\n  <span class="kw">ROUND</span>(<span class="num">100.0</span> * <span class="kw">COUNT</span>(*) / <span class="fn">SUM</span>(<span class="kw">COUNT</span>(*)) <span class="kw">OVER</span>(), <span class="num">2</span>) <span class="kw">AS</span> pct\n<span class="kw">FROM</span>   orders\n<span class="kw">GROUP BY</span> status;` },
+  { id:47, cat:'Aggregation', diff:'easy',   title:'Find the maximum value per group',
+    desc:'Get the most expensive order for each user.',
+    sql:`<span class="kw">SELECT</span> user_id, <span class="fn">MAX</span>(total) <span class="kw">AS</span> max_order\n<span class="kw">FROM</span>   orders\n<span class="kw">GROUP BY</span> user_id;` },
+  { id:48, cat:'Aggregation', diff:'hard',   title:'ROLLUP for subtotals',
+    desc:'Generate order counts with subtotals by category and subcategory.',
+    sql:`<span class="kw">SELECT</span> category, subcategory, <span class="kw">COUNT</span>(*) <span class="kw">AS</span> cnt\n<span class="kw">FROM</span>   products\n<span class="kw">GROUP BY ROLLUP</span>(category, subcategory);`,
+    tip:'ROLLUP adds NULL-grouped rows for subtotals. Check for GROUPING() to distinguish NULLs.' },
+  { id:49, cat:'Aggregation', diff:'medium', title:'Median / percentile',
+    desc:'Calculate the 50th percentile (median) of order totals.',
+    sql:`<span class="cm">-- PostgreSQL:</span>\n<span class="kw">SELECT</span>\n  <span class="fn">PERCENTILE_CONT</span>(<span class="num">0.5</span>) <span class="kw">WITHIN GROUP</span>\n  (<span class="kw">ORDER BY</span> total) <span class="kw">AS</span> median_total\n<span class="kw">FROM</span> orders;` },
+  { id:50, cat:'Aggregation', diff:'medium', title:'Pivot rows to columns',
+    desc:'Pivot a monthly sales table so each month becomes a column.',
+    sql:`<span class="kw">SELECT</span>\n  <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> month=<span class="str">'Jan'</span> <span class="kw">THEN</span> revenue <span class="kw">END</span>) Jan,\n  <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> month=<span class="str">'Feb'</span> <span class="kw">THEN</span> revenue <span class="kw">END</span>) Feb,\n  <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> month=<span class="str">'Mar'</span> <span class="kw">THEN</span> revenue <span class="kw">END</span>) Mar\n<span class="kw">FROM</span>   monthly_sales;` },
+
+  // ── SUBQUERIES (51–60) ──
+  { id:51, cat:'Subqueries', diff:'medium', title:'Subquery in SELECT (scalar)',
+    desc:'For each user, show their order count inline.',
+    sql:`<span class="kw">SELECT</span> id, name,\n  (<span class="kw">SELECT COUNT</span>(*) <span class="kw">FROM</span> orders\n   <span class="kw">WHERE</span> user_id = u.id) <span class="kw">AS</span> order_cnt\n<span class="kw">FROM</span>   users u;` },
+  { id:52, cat:'Subqueries', diff:'easy',   title:'Second highest salary',
+    desc:'Find the second highest distinct salary in the <code>employees</code> table.',
+    sql:`<span class="kw">SELECT MAX</span>(salary) <span class="kw">AS</span> second_highest\n<span class="kw">FROM</span>   employees\n<span class="kw">WHERE</span>  salary < (<span class="kw">SELECT MAX</span>(salary) <span class="kw">FROM</span> employees);`,
+    tip:'Classic interview question. Also solvable with DENSE_RANK() OVER (ORDER BY salary DESC) = 2.' },
+  { id:53, cat:'Subqueries', diff:'medium', title:'Nth highest value with OFFSET',
+    desc:'Find the Nth highest salary using LIMIT/OFFSET.',
+    sql:`<span class="cm">-- Replace N with the desired rank (1-based)</span>\n<span class="kw">SELECT DISTINCT</span> salary\n<span class="kw">FROM</span>   employees\n<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>\n<span class="kw">LIMIT</span>  <span class="num">1</span> <span class="kw">OFFSET</span> (N - <span class="num">1</span>);` },
+  { id:54, cat:'Subqueries', diff:'medium', title:'NOT EXISTS for missing records',
+    desc:'Find products that have never been ordered.',
+    sql:`<span class="kw">SELECT</span> p.id, p.name\n<span class="kw">FROM</span>   products p\n<span class="kw">WHERE NOT EXISTS</span> (\n  <span class="kw">SELECT</span> <span class="num">1</span> <span class="kw">FROM</span> order_items oi\n  <span class="kw">WHERE</span>  oi.product_id = p.id\n);` },
+  { id:55, cat:'Subqueries', diff:'medium', title:'CTE (WITH clause)',
+    desc:'Use a CTE to find the top-3 revenue-generating products.',
+    sql:`<span class="kw">WITH</span> product_revenue <span class="kw">AS</span> (\n  <span class="kw">SELECT</span> product_id,\n         <span class="fn">SUM</span>(price * quantity) <span class="kw">AS</span> revenue\n  <span class="kw">FROM</span>   order_items\n  <span class="kw">GROUP BY</span> product_id\n)\n<span class="kw">SELECT</span> p.name, pr.revenue\n<span class="kw">FROM</span>   product_revenue pr\n<span class="kw">JOIN</span>   products p <span class="kw">ON</span> p.id = pr.product_id\n<span class="kw">ORDER BY</span> revenue <span class="kw">DESC</span>\n<span class="kw">LIMIT</span>  <span class="num">3</span>;` },
+  { id:56, cat:'Subqueries', diff:'hard',   title:'Recursive CTE',
+    desc:'Traverse an org-chart hierarchy to list all subordinates of a given manager.',
+    sql:`<span class="kw">WITH RECURSIVE</span> subordinates <span class="kw">AS</span> (\n  <span class="kw">SELECT</span> id, name, manager_id\n  <span class="kw">FROM</span>   employees\n  <span class="kw">WHERE</span>  id = <span class="num">5</span>  <span class="cm">-- root manager</span>\n  <span class="kw">UNION ALL</span>\n  <span class="kw">SELECT</span> e.id, e.name, e.manager_id\n  <span class="kw">FROM</span>   employees e\n  <span class="kw">JOIN</span>   subordinates s <span class="kw">ON</span> e.manager_id = s.id\n)\n<span class="kw">SELECT</span> * <span class="kw">FROM</span> subordinates;` },
+  { id:57, cat:'Subqueries', diff:'medium', title:'DELETE with subquery',
+    desc:'Delete all order items belonging to cancelled orders.',
+    sql:`<span class="kw">DELETE FROM</span> order_items\n<span class="kw">WHERE</span>  order_id <span class="kw">IN</span> (\n  <span class="kw">SELECT</span> id <span class="kw">FROM</span> orders\n  <span class="kw">WHERE</span>  status = <span class="str">'cancelled'</span>\n);` },
+  { id:58, cat:'Subqueries', diff:'medium', title:'UPDATE with subquery',
+    desc:'Set <code>is_vip = TRUE</code> for users who have spent more than ₹10,000 total.',
+    sql:`<span class="kw">UPDATE</span> users\n<span class="kw">SET</span>    is_vip = <span class="kw">TRUE</span>\n<span class="kw">WHERE</span>  id <span class="kw">IN</span> (\n  <span class="kw">SELECT</span> user_id\n  <span class="kw">FROM</span>   orders\n  <span class="kw">GROUP BY</span> user_id\n  <span class="kw">HAVING SUM</span>(total) > <span class="num">10000</span>\n);` },
+  { id:59, cat:'Subqueries', diff:'medium', title:'Derived table (inline view)',
+    desc:'Wrap a subquery as a derived table to paginate aggregated results.',
+    sql:`<span class="kw">SELECT</span> * <span class="kw">FROM</span> (\n  <span class="kw">SELECT</span> user_id, <span class="kw">COUNT</span>(*) <span class="kw">AS</span> cnt\n  <span class="kw">FROM</span>   orders\n  <span class="kw">GROUP BY</span> user_id\n) ranked\n<span class="kw">WHERE</span>  cnt > <span class="num">3</span>\n<span class="kw">ORDER BY</span> cnt <span class="kw">DESC</span>\n<span class="kw">LIMIT</span>  <span class="num">10</span>;` },
+  { id:60, cat:'Subqueries', diff:'hard',   title:'Find gaps in a sequence',
+    desc:'Detect missing IDs (gaps) in a numeric sequence.',
+    sql:`<span class="kw">SELECT</span> t1.id + <span class="num">1</span> <span class="kw">AS</span> gap_start\n<span class="kw">FROM</span>   my_table t1\n<span class="kw">WHERE NOT EXISTS</span> (\n  <span class="kw">SELECT</span> <span class="num">1</span> <span class="kw">FROM</span> my_table t2\n  <span class="kw">WHERE</span>  t2.id = t1.id + <span class="num">1</span>\n)\n<span class="kw">ORDER BY</span> t1.id;` },
+
+  // ── DATA VALIDATION (61–75) ──
+  { id:61, cat:'Data Validation', diff:'easy',   title:'Find duplicate email addresses',
+    desc:'Detect users registered with the same email more than once.',
+    sql:`<span class="kw">SELECT</span> email, <span class="kw">COUNT</span>(*) <span class="kw">AS</span> cnt\n<span class="kw">FROM</span>   users\n<span class="kw">GROUP BY</span> email\n<span class="kw">HAVING COUNT</span>(*) > <span class="num">1</span>;`,
+    tip:'Run this as a post-registration test assertion: 0 rows = no duplicates = pass.' },
+  { id:62, cat:'Data Validation', diff:'easy',   title:'Check for unexpected NULLs',
+    desc:'Verify that no mandatory field is NULL after an INSERT operation.',
+    sql:`<span class="kw">SELECT</span> id\n<span class="kw">FROM</span>   users\n<span class="kw">WHERE</span>  name     <span class="kw">IS NULL</span>\n   <span class="kw">OR</span>  email    <span class="kw">IS NULL</span>\n   <span class="kw">OR</span>  password <span class="kw">IS NULL</span>;\n<span class="cm">-- Expect: 0 rows</span>` },
+  { id:63, cat:'Data Validation', diff:'medium', title:'Validate email format with REGEXP',
+    desc:'Find rows where email does not match a basic RFC pattern.',
+    sql:`<span class="cm">-- MySQL:</span>\n<span class="kw">SELECT</span> id, email <span class="kw">FROM</span> users\n<span class="kw">WHERE</span>  email <span class="kw">NOT REGEXP</span>\n       <span class="str">'^[^@\\\\s]+@[^@\\\\s]+\\\\.[^@\\\\s]+$'</span>;\n\n<span class="cm">-- PostgreSQL:</span>\n<span class="kw">WHERE</span>  email !~ <span class="str">'^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$'</span>` },
+  { id:64, cat:'Data Validation', diff:'easy',   title:'Assert record count after batch insert',
+    desc:'Verify that a bulk import added exactly 500 rows.',
+    sql:`<span class="cm">-- Before:</span>\n<span class="kw">SELECT COUNT</span>(*) <span class="kw">FROM</span> products; <span class="cm">-- save as :before</span>\n\n<span class="cm">-- Run import...</span>\n\n<span class="cm">-- After:</span>\n<span class="kw">SELECT COUNT</span>(*) <span class="kw">FROM</span> products; <span class="cm">-- should be :before + 500</span>` },
+  { id:65, cat:'Data Validation', diff:'medium', title:'Validate referential integrity',
+    desc:'Ensure every <code>order_item</code> references an existing <code>product</code>.',
+    sql:`<span class="kw">SELECT</span> oi.id, oi.product_id\n<span class="kw">FROM</span>   order_items oi\n<span class="kw">LEFT JOIN</span> products p <span class="kw">ON</span> oi.product_id = p.id\n<span class="kw">WHERE</span>  p.id <span class="kw">IS NULL</span>;\n<span class="cm">-- Expect: 0 rows</span>` },
+  { id:66, cat:'Data Validation', diff:'easy',   title:'Range validation on numeric field',
+    desc:'Check that no user\'s age falls outside 0–120.',
+    sql:`<span class="kw">SELECT</span> id, age <span class="kw">FROM</span> users\n<span class="kw">WHERE</span>  age <span class="kw">NOT BETWEEN</span> <span class="num">0</span> <span class="kw">AND</span> <span class="num">120</span>\n   <span class="kw">OR</span>  age <span class="kw">IS NULL</span>;` },
+  { id:67, cat:'Data Validation', diff:'medium', title:'Check timestamp ordering',
+    desc:'Validate that <code>updated_at</code> is never earlier than <code>created_at</code>.',
+    sql:`<span class="kw">SELECT</span> id, created_at, updated_at\n<span class="kw">FROM</span>   records\n<span class="kw">WHERE</span>  updated_at < created_at;\n<span class="cm">-- Expect: 0 rows</span>`,
+    tip:'This catches clock-skew bugs and timezone mismatches in CI environments.' },
+  { id:68, cat:'Data Validation', diff:'medium', title:'Verify enum values',
+    desc:'Confirm every order status is one of the allowed values.',
+    sql:`<span class="kw">SELECT DISTINCT</span> status <span class="kw">FROM</span> orders\n<span class="kw">WHERE</span>  status <span class="kw">NOT IN</span>\n  (<span class="str">'pending'</span>,<span class="str">'processing'</span>,<span class="str">'shipped'</span>,<span class="str">'delivered'</span>,<span class="str">'cancelled'</span>);\n<span class="cm">-- Expect: 0 rows</span>` },
+  { id:69, cat:'Data Validation', diff:'hard',   title:'Cross-table total consistency',
+    desc:'Verify that <code>orders.total</code> equals the SUM of its <code>order_items</code>.',
+    sql:`<span class="kw">SELECT</span> o.id,\n       o.total <span class="kw">AS</span> order_total,\n       <span class="fn">SUM</span>(oi.price * oi.quantity) <span class="kw">AS</span> items_total\n<span class="kw">FROM</span>   orders o\n<span class="kw">JOIN</span>   order_items oi <span class="kw">ON</span> oi.order_id = o.id\n<span class="kw">GROUP BY</span> o.id, o.total\n<span class="kw">HAVING</span> o.total <> <span class="fn">SUM</span>(oi.price * oi.quantity);\n<span class="cm">-- Expect: 0 rows</span>`,
+    tip:'Core regression assertion after any pricing or cart logic change.' },
+  { id:70, cat:'Data Validation', diff:'medium', title:'Detect string leading/trailing spaces',
+    desc:'Find product names that have accidental whitespace.',
+    sql:`<span class="kw">SELECT</span> id, name\n<span class="kw">FROM</span>   products\n<span class="kw">WHERE</span>  name <> <span class="fn">TRIM</span>(name);` },
+  { id:71, cat:'Data Validation', diff:'medium', title:'Check for future-dated records',
+    desc:'Find any <code>created_at</code> timestamps set in the future.',
+    sql:`<span class="kw">SELECT</span> id, created_at\n<span class="kw">FROM</span>   orders\n<span class="kw">WHERE</span>  created_at > <span class="fn">NOW</span>();` },
+  { id:72, cat:'Data Validation', diff:'hard',   title:'Detect data drift between environments',
+    desc:'Compare row counts across prod/staging schemas for key tables.',
+    sql:`<span class="kw">SELECT</span>\n  <span class="str">'prod'</span>    <span class="kw">AS</span> env, <span class="kw">COUNT</span>(*) <span class="kw">FROM</span> prod.users\n<span class="kw">UNION ALL</span>\n<span class="kw">SELECT</span>\n  <span class="str">'staging'</span> <span class="kw">AS</span> env, <span class="kw">COUNT</span>(*) <span class="kw">FROM</span> staging.users;` },
+  { id:73, cat:'Data Validation', diff:'medium', title:'Verify uniqueness constraint',
+    desc:'Confirm the <code>sku</code> column in products has no duplicates.',
+    sql:`<span class="kw">SELECT</span> sku, <span class="kw">COUNT</span>(*) <span class="kw">AS</span> cnt\n<span class="kw">FROM</span>   products\n<span class="kw">GROUP BY</span> sku\n<span class="kw">HAVING COUNT</span>(*) > <span class="num">1</span>;\n<span class="cm">-- Expect: 0 rows</span>` },
+  { id:74, cat:'Data Validation', diff:'hard',   title:'Before/after diff with EXCEPT',
+    desc:'Find rows that exist in a snapshot but not after a migration.',
+    sql:`<span class="cm">-- Rows deleted by migration:</span>\n<span class="kw">SELECT</span> id, name <span class="kw">FROM</span> users_snapshot\n<span class="kw">EXCEPT</span>\n<span class="kw">SELECT</span> id, name <span class="kw">FROM</span> users;\n\n<span class="cm">-- Rows added by migration:</span>\n<span class="kw">SELECT</span> id, name <span class="kw">FROM</span> users\n<span class="kw">EXCEPT</span>\n<span class="kw">SELECT</span> id, name <span class="kw">FROM</span> users_snapshot;` },
+  { id:75, cat:'Data Validation', diff:'medium', title:'Validate FK constraint not enforced by DB',
+    desc:'Manually verify FK integrity when DB constraints are disabled.',
+    sql:`<span class="kw">SELECT</span> o.id, o.user_id\n<span class="kw">FROM</span>   orders o\n<span class="kw">WHERE NOT EXISTS</span> (\n  <span class="kw">SELECT</span> <span class="num">1</span> <span class="kw">FROM</span> users u\n  <span class="kw">WHERE</span>  u.id = o.user_id\n);\n<span class="cm">-- Expect: 0 rows</span>` },
+
+  // ── TEST DATA MGMT (76–87) ──
+  { id:76, cat:'Test Data Mgmt', diff:'easy',   title:'Insert labelled test data',
+    desc:'Insert test users with a <code>is_test</code> flag for easy cleanup.',
+    sql:`<span class="kw">INSERT INTO</span> users (name, email, is_test)\n<span class="kw">VALUES</span>\n  (<span class="str">'QA Bot 1'</span>, <span class="str">'qa1@test.internal'</span>, <span class="kw">TRUE</span>),\n  (<span class="str">'QA Bot 2'</span>, <span class="str">'qa2@test.internal'</span>, <span class="kw">TRUE</span>);`,
+    tip:'Never mix test data into production; always use a flag or dedicated email domain.' },
+  { id:77, cat:'Test Data Mgmt', diff:'medium', title:'Transaction-wrapped test with rollback',
+    desc:'Run a test inside a transaction and roll back to leave the DB clean.',
+    sql:`<span class="kw">BEGIN</span>;\n  <span class="kw">INSERT INTO</span> orders (user_id, total, status)\n  <span class="kw">VALUES</span> (<span class="num">1</span>, <span class="num">199.99</span>, <span class="str">'pending'</span>);\n\n  <span class="cm">-- Assertions here...</span>\n  <span class="kw">SELECT</span> * <span class="kw">FROM</span> orders <span class="kw">WHERE</span> user_id = <span class="num">1</span>;\n\n<span class="kw">ROLLBACK</span>; <span class="cm">-- DB left unchanged</span>` },
+  { id:78, cat:'Test Data Mgmt', diff:'medium', title:'Cascade-delete test data',
+    desc:'Clean up all test users and their related orders/items in correct FK order.',
+    sql:`<span class="kw">DELETE FROM</span> order_items\n<span class="kw">WHERE</span> order_id <span class="kw">IN</span> (\n  <span class="kw">SELECT</span> id <span class="kw">FROM</span> orders\n  <span class="kw">WHERE</span>  user_id <span class="kw">IN</span>\n    (<span class="kw">SELECT</span> id <span class="kw">FROM</span> users <span class="kw">WHERE</span> is_test=<span class="kw">TRUE</span>));\n<span class="kw">DELETE FROM</span> orders <span class="kw">WHERE</span> user_id <span class="kw">IN</span>\n  (<span class="kw">SELECT</span> id <span class="kw">FROM</span> users <span class="kw">WHERE</span> is_test=<span class="kw">TRUE</span>);\n<span class="kw">DELETE FROM</span> users  <span class="kw">WHERE</span> is_test=<span class="kw">TRUE</span>;` },
+  { id:79, cat:'Test Data Mgmt', diff:'easy',   title:'Clone a row for testing',
+    desc:'Duplicate a specific product record for use in a test.',
+    sql:`<span class="kw">INSERT INTO</span> products (name, sku, price, category_id, is_test)\n<span class="kw">SELECT</span> name || <span class="str">'_TEST'</span>, sku || <span class="str">'_T'</span>, price, category_id, <span class="kw">TRUE</span>\n<span class="kw">FROM</span>   products\n<span class="kw">WHERE</span>  id = <span class="num">42</span>;` },
+  { id:80, cat:'Test Data Mgmt', diff:'medium', title:'Snapshot a table before testing',
+    desc:'Create a point-in-time snapshot to compare against after a test run.',
+    sql:`<span class="kw">CREATE TABLE</span> orders_snapshot <span class="kw">AS</span>\n<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders;\n\n<span class="cm">-- After test:</span>\n<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders\n<span class="kw">EXCEPT</span>\n<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders_snapshot;\n\n<span class="cm">-- Cleanup snapshot:</span>\n<span class="kw">DROP TABLE</span> orders_snapshot;` },
+  { id:81, cat:'Test Data Mgmt', diff:'medium', title:'Generate sequential test IDs',
+    desc:'Create a series of test records with auto-incrementing test IDs.',
+    sql:`<span class="cm">-- PostgreSQL: generate 100 test users</span>\n<span class="kw">INSERT INTO</span> users (name, email, is_test)\n<span class="kw">SELECT</span>\n  <span class="str">'Test User '</span> || g,\n  <span class="str">'user'</span> || g || <span class="str">'@test.internal'</span>,\n  <span class="kw">TRUE</span>\n<span class="kw">FROM</span> <span class="fn">generate_series</span>(<span class="num">1</span>, <span class="num">100</span>) g;` },
+  { id:82, cat:'Test Data Mgmt', diff:'easy',   title:'Verify setup data exists before test',
+    desc:'Assert that required seed data is present before running a test suite.',
+    sql:`<span class="kw">SELECT COUNT</span>(*) <span class="kw">FROM</span> categories\n<span class="kw">WHERE</span>  name <span class="kw">IN</span> (<span class="str">'Electronics'</span>, <span class="str">'Clothing'</span>, <span class="str">'Books'</span>);\n<span class="cm">-- Expect: 3</span>` },
+  { id:83, cat:'Test Data Mgmt', diff:'medium', title:'Reset auto-increment sequence',
+    desc:'Reset the ID sequence after deleting test data.',
+    sql:`<span class="cm">-- PostgreSQL:</span>\n<span class="kw">SELECT</span> <span class="fn">setval</span>(<span class="str">'users_id_seq'</span>,\n  (<span class="kw">SELECT MAX</span>(id) <span class="kw">FROM</span> users));\n\n<span class="cm">-- MySQL:</span>\n<span class="kw">ALTER TABLE</span> users AUTO_INCREMENT = <span class="num">1</span>;` },
+  { id:84, cat:'Test Data Mgmt', diff:'medium', title:'UPSERT for idempotent test setup',
+    desc:'Insert a test config row or update it if it already exists (PostgreSQL).',
+    sql:`<span class="kw">INSERT INTO</span> config (key, value)\n<span class="kw">VALUES</span> (<span class="str">'feature_flag_x'</span>, <span class="str">'enabled'</span>)\n<span class="kw">ON CONFLICT</span> (key)\n<span class="kw">DO UPDATE SET</span> value = <span class="kw">EXCLUDED</span>.value;` },
+  { id:85, cat:'Test Data Mgmt', diff:'hard',   title:'Mask PII for test environments',
+    desc:'Copy prod users to staging while anonymising PII.',
+    sql:`<span class="kw">INSERT INTO</span> staging.users (id, name, email)\n<span class="kw">SELECT</span>\n  id,\n  <span class="str">'User_'</span> || id,\n  <span class="str">'user_'</span> || id || <span class="str">'@masked.test'</span>\n<span class="kw">FROM</span> prod.users;` },
+  { id:86, cat:'Test Data Mgmt', diff:'medium', title:'Verify teardown completeness',
+    desc:'Confirm all test data was removed after test suite execution.',
+    sql:`<span class="kw">SELECT</span> <span class="kw">COUNT</span>(*) <span class="kw">AS</span> leftover_test_rows\n<span class="kw">FROM</span>   users\n<span class="kw">WHERE</span>  is_test = <span class="kw">TRUE</span>;\n<span class="cm">-- Expect: 0</span>` },
+  { id:87, cat:'Test Data Mgmt', diff:'hard',   title:'Parallel test isolation with schema per run',
+    desc:'Create a schema per test run for full isolation, then drop it after.',
+    sql:`<span class="cm">-- Setup:</span>\n<span class="kw">CREATE SCHEMA</span> test_run_20240101;\n<span class="kw">CREATE TABLE</span> test_run_20240101.users\n  (<span class="kw">LIKE</span> public.users <span class="kw">INCLUDING ALL</span>);\n\n<span class="cm">-- After tests:</span>\n<span class="kw">DROP SCHEMA</span> test_run_20240101 <span class="kw">CASCADE</span>;` },
+
+  // ── ADVANCED (88–100) ──
+  { id:88, cat:'Advanced', diff:'hard',   title:'ROW_NUMBER window function',
+    desc:'Rank orders per user by date; keep only each user\'s latest order.',
+    sql:`<span class="kw">WITH</span> ranked <span class="kw">AS</span> (\n  <span class="kw">SELECT</span> *, <span class="fn">ROW_NUMBER</span>() <span class="kw">OVER</span> (\n    <span class="kw">PARTITION BY</span> user_id\n    <span class="kw">ORDER BY</span> created_at <span class="kw">DESC</span>) rn\n  <span class="kw">FROM</span> orders\n)\n<span class="kw">SELECT</span> * <span class="kw">FROM</span> ranked <span class="kw">WHERE</span> rn = <span class="num">1</span>;` },
+  { id:89, cat:'Advanced', diff:'hard',   title:'DENSE_RANK vs RANK vs ROW_NUMBER',
+    desc:'Show the difference between RANK, DENSE_RANK, and ROW_NUMBER on tied salaries.',
+    sql:`<span class="kw">SELECT</span> name, salary,\n  <span class="fn">RANK</span>()        <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>) rk,\n  <span class="fn">DENSE_RANK</span>()  <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>) dr,\n  <span class="fn">ROW_NUMBER</span>()  <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> salary <span class="kw">DESC</span>) rn\n<span class="kw">FROM</span> employees;`,
+    tip:'RANK skips numbers on ties; DENSE_RANK does not; ROW_NUMBER is always unique.' },
+  { id:90, cat:'Advanced', diff:'hard',   title:'LAG / LEAD for sequential comparison',
+    desc:'Compare each order\'s total with the previous one for the same user.',
+    sql:`<span class="kw">SELECT</span> user_id, created_at, total,\n  <span class="fn">LAG</span>(total) <span class="kw">OVER</span> (\n    <span class="kw">PARTITION BY</span> user_id\n    <span class="kw">ORDER BY</span> created_at\n  ) <span class="kw">AS</span> prev_total\n<span class="kw">FROM</span> orders;` },
+  { id:91, cat:'Advanced', diff:'hard',   title:'EXPLAIN ANALYZE for query tuning',
+    desc:'Profile a slow query to find missing indexes or sequential scans.',
+    sql:`<span class="kw">EXPLAIN ANALYZE</span>\n<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders\n<span class="kw">WHERE</span>  user_id = <span class="num">42</span>\n  <span class="kw">AND</span>  status = <span class="str">'pending'</span>;\n\n<span class="cm">-- Look for "Seq Scan" vs "Index Scan"</span>`,
+    tip:'If you see a Seq Scan on a large table, consider adding a composite index.' },
+  { id:92, cat:'Advanced', diff:'medium', title:'Create and use an index',
+    desc:'Add a composite index to speed up order lookups by user_id and status.',
+    sql:`<span class="kw">CREATE INDEX</span> idx_orders_user_status\n  <span class="kw">ON</span> orders(user_id, status);\n\n<span class="cm">-- Check it's used:</span>\n<span class="kw">EXPLAIN</span> <span class="kw">SELECT</span> * <span class="kw">FROM</span> orders\n<span class="kw">WHERE</span> user_id=<span class="num">1</span> <span class="kw">AND</span> status=<span class="str">'pending'</span>;` },
+  { id:93, cat:'Advanced', diff:'hard',   title:'Pivot with dynamic columns (stored proc)',
+    desc:'Dynamically pivot status counts by month into columns.',
+    sql:`<span class="cm">-- MySQL dynamic pivot (stored procedure approach):</span>\n<span class="kw">SET</span> @sql = <span class="kw">NULL</span>;\n<span class="kw">SELECT GROUP_CONCAT</span>(<span class="kw">DISTINCT</span>\n  <span class="fn">CONCAT</span>(<span class="str">"SUM(CASE WHEN status='"</span>, status,\n         <span class="str">"' THEN 1 ELSE 0 END) AS \`"</span>, status, <span class="str">"\`"</span>)\n) <span class="kw">INTO</span> @sql <span class="kw">FROM</span> orders;\n<span class="kw">SET</span> @sql = <span class="fn">CONCAT</span>(<span class="str">'SELECT month, '</span>, @sql,\n                   <span class="str">' FROM orders GROUP BY month'</span>);\n<span class="kw">PREPARE</span> stmt <span class="kw">FROM</span> @sql;\n<span class="kw">EXECUTE</span> stmt;` },
+  { id:94, cat:'Advanced', diff:'medium', title:'String aggregation (GROUP_CONCAT / STRING_AGG)',
+    desc:'List all product names per order as a comma-separated string.',
+    sql:`<span class="cm">-- MySQL:</span>\n<span class="kw">SELECT</span> o.id,\n  <span class="fn">GROUP_CONCAT</span>(p.name <span class="kw">ORDER BY</span> p.name) products\n<span class="kw">FROM</span>   orders o\n<span class="kw">JOIN</span>   order_items oi <span class="kw">ON</span> oi.order_id  = o.id\n<span class="kw">JOIN</span>   products p   <span class="kw">ON</span> oi.product_id = p.id\n<span class="kw">GROUP BY</span> o.id;\n\n<span class="cm">-- PostgreSQL: STRING_AGG(p.name, ', ')</span>` },
+  { id:95, cat:'Advanced', diff:'hard',   title:'JSON column querying',
+    desc:'Extract a value from a JSON column (PostgreSQL).',
+    sql:`<span class="cm">-- Access JSON field:</span>\n<span class="kw">SELECT</span> id,\n  metadata->><span class="str">'source'</span>      <span class="kw">AS</span> source,\n  metadata->><span class="str">'campaign_id'</span> <span class="kw">AS</span> campaign\n<span class="kw">FROM</span>   orders\n<span class="kw">WHERE</span>  metadata->><span class="str">'source'</span> = <span class="str">'mobile_app'</span>;` },
+  { id:96, cat:'Advanced', diff:'hard',   title:'Find rows changed in last N minutes',
+    desc:'Poll for recently modified rows — useful in event-driven test assertions.',
+    sql:`<span class="kw">SELECT</span> * <span class="kw">FROM</span> orders\n<span class="kw">WHERE</span>  updated_at >= <span class="fn">NOW</span>() - <span class="kw">INTERVAL</span> <span class="str">'5 minutes'</span>;\n\n<span class="cm">-- MySQL:</span>\n<span class="kw">WHERE</span>  updated_at >= <span class="fn">DATE_SUB</span>(<span class="fn">NOW</span>(), <span class="kw">INTERVAL</span> <span class="num">5</span> MINUTE)` },
+  { id:97, cat:'Advanced', diff:'hard',   title:'Deadlock detection query',
+    desc:'Check for blocking locks in PostgreSQL during concurrent test runs.',
+    sql:`<span class="kw">SELECT</span> bl.pid, a.query,\n       kl.pid <span class="kw">AS</span> blocking_pid, ka.query <span class="kw">AS</span> blocking_query\n<span class="kw">FROM</span>  pg_catalog.pg_locks bl\n<span class="kw">JOIN</span>  pg_catalog.pg_stat_activity a  <span class="kw">ON</span> a.pid  = bl.pid\n<span class="kw">JOIN</span>  pg_catalog.pg_locks kl\n  <span class="kw">ON</span>  kl.transactionid = bl.transactionid\n  <span class="kw">AND</span> kl.pid <> bl.pid\n<span class="kw">JOIN</span>  pg_catalog.pg_stat_activity ka <span class="kw">ON</span> ka.pid = kl.pid\n<span class="kw">WHERE NOT</span> bl.granted;` },
+  { id:98, cat:'Advanced', diff:'hard',   title:'Table size and row count audit',
+    desc:'Find the largest tables to understand DB growth during load testing.',
+    sql:`<span class="cm">-- PostgreSQL:</span>\n<span class="kw">SELECT</span>\n  relname  <span class="kw">AS</span> table_name,\n  n_live_tup <span class="kw">AS</span> row_count,\n  <span class="fn">pg_size_pretty</span>(<span class="fn">pg_total_relation_size</span>(oid)) <span class="kw">AS</span> size\n<span class="kw">FROM</span>  pg_stat_user_tables\n<span class="kw">ORDER BY</span> pg_total_relation_size(oid) <span class="kw">DESC</span>;` },
+  { id:99,  cat:'Advanced', diff:'hard',   title:'Slow query log analysis',
+    desc:'Find the top 5 slowest queries from pg_stat_statements.',
+    sql:`<span class="cm">-- Requires pg_stat_statements extension:</span>\n<span class="kw">SELECT</span> query,\n  <span class="fn">ROUND</span>(mean_exec_time::numeric, <span class="num">2</span>) <span class="kw">AS</span> avg_ms,\n  calls, rows\n<span class="kw">FROM</span>  pg_stat_statements\n<span class="kw">ORDER BY</span> mean_exec_time <span class="kw">DESC</span>\n<span class="kw">LIMIT</span> <span class="num">5</span>;` },
+  { id:100, cat:'Advanced', diff:'hard',   title:'Delete duplicate rows, keep one',
+    desc:'Remove duplicate email rows from users, keeping the row with the lowest ID.',
+    sql:`<span class="kw">DELETE FROM</span> users\n<span class="kw">WHERE</span> id <span class="kw">NOT IN</span> (\n  <span class="kw">SELECT MIN</span>(id)\n  <span class="kw">FROM</span>   users\n  <span class="kw">GROUP BY</span> email\n);\n\n<span class="cm">-- Safer (CTE form, avoids subquery limits in MySQL):</span>\n<span class="kw">WITH</span> keep <span class="kw">AS</span> (\n  <span class="kw">SELECT MIN</span>(id) id <span class="kw">FROM</span> users <span class="kw">GROUP BY</span> email\n)\n<span class="kw">DELETE FROM</span> users\n<span class="kw">WHERE</span>  id <span class="kw">NOT IN</span> (<span class="kw">SELECT</span> id <span class="kw">FROM</span> keep);`,
+    tip:'Classic interview question — know both the subquery form and the safer CTE form.' },
+];
+
+let solved = JSON.parse(localStorage.getItem('sdet_sql_solved') || '[]');
+let currentFilter = 'all';
+let currentQ = 0;
+
+function saveSolved() {
+  localStorage.setItem('sdet_sql_solved', JSON.stringify(solved));
+  updateProgress();
+}
+
+function updateProgress() {
+  const cnt = solved.length;
+  document.getElementById('solved-count').textContent = cnt;
+  document.getElementById('progress-label').textContent = cnt + ' / 100';
+  document.getElementById('progress-fill').style.width = cnt + '%';
+}
+
+function setFilter(f, el) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderAll();
+}
+
+function getFiltered() {
+  const search = document.getElementById('search').value.toLowerCase();
+  return Q.filter(q => {
+    if (currentFilter === 'easy'   && q.diff !== 'easy')   return false;
+    if (currentFilter === 'medium' && q.diff !== 'medium') return false;
+    if (currentFilter === 'hard'   && q.diff !== 'hard')   return false;
+    if (currentFilter === 'unsolved' && solved.includes(q.id)) return false;
+    if (search && !q.title.toLowerCase().includes(search) &&
+        !q.cat.toLowerCase().includes(search) &&
+        !q.diff.toLowerCase().includes(search)) return false;
+    return true;
+  });
+}
+
+function renderAll() {
+  const filtered = getFiltered();
+  const byCat = {};
+  filtered.forEach(q => { (byCat[q.cat] = byCat[q.cat] || []).push(q); });
+
+  const main = document.getElementById('main-content');
+  if (!filtered.length) {
+    main.innerHTML = '<div class="empty">No questions match your filters.</div>';
+    return;
+  }
+
+  let html = '';
+  for (const cat of Object.keys(CATEGORIES)) {
+    if (!byCat[cat]) continue;
+    const color = CATEGORIES[cat].color;
+    html += `<div class="section-header">
+      <span class="section-title" style="color:${color}">${cat}</span>
+      <div class="section-line"></div>
+      <span class="section-count">${byCat[cat].length}</span>
+    </div>
+    <div class="q-grid">`;
+    byCat[cat].forEach(q => {
+      const isSolved = solved.includes(q.id);
+      html += `<div class="q-card ${isSolved?'solved':''}" style="--cat-color:${color}"
+        onclick="openModal(${q.id})">
+        <div class="q-num">
+          #${String(q.id).padStart(2,'0')}
+          <span class="diff-badge diff-${q.diff}">${q.diff}</span>
+        </div>
+        <div class="q-title">${q.title}</div>
+        <div class="q-tags">
+          <span class="q-tag">${CATEGORIES[q.cat].short}</span>
+          ${isSolved ? '<span class="q-tag" style="color:var(--accent);border-color:var(--accent)">solved</span>' : ''}
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+  main.innerHTML = html;
+}
+
+function openModal(id) {
+  currentQ = id;
+  renderModal(id);
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function renderModal(id) {
+  const q = Q.find(x => x.id === id);
+  const color = CATEGORIES[q.cat].color;
+  document.getElementById('m-num').textContent = `#${String(q.id).padStart(2,'0')} · ${q.cat}`;
+  document.getElementById('m-title').textContent = q.title;
+  document.getElementById('m-badges').innerHTML =
+    `<span class="diff-badge diff-${q.diff}">${q.diff}</span>
+     <span class="diff-badge" style="background:rgba(255,255,255,.05);color:${color}">${q.cat}</span>`;
+
+  let body = `<div class="modal-section">
+    <div class="modal-section-title">Question</div>
+    <div class="modal-text">${q.desc}</div>
+  </div>
+  <div class="modal-section">
+    <div class="modal-section-title">Solution</div>
+    <pre class="code-block">${q.sql}</pre>
+  </div>`;
+
+  if (q.tip) body += `<div class="tip-box"><strong>SDET Tip:</strong> ${q.tip}</div>`;
+  document.getElementById('m-body').innerHTML = body;
+
+  const btn = document.getElementById('m-solve-btn');
+  if (solved.includes(id)) {
+    btn.textContent = '✓ Solved';
+    btn.style.background = '#1a3d2b';
+    btn.style.color = '#4fffb0';
+    btn.style.borderColor = '#4fffb0';
+  } else {
+    btn.textContent = 'Mark as Solved';
+    btn.style.background = '';
+    btn.style.color = '';
+    btn.style.borderColor = '';
+    btn.className = 'btn btn-accent';
+  }
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  renderAll();
+}
+
+function toggleSolve() {
+  if (solved.includes(currentQ)) {
+    solved = solved.filter(x => x !== currentQ);
+  } else {
+    solved.push(currentQ);
+  }
+  saveSolved();
+  renderModal(currentQ);
+}
+
+function prevQ() {
+  const idx = Q.findIndex(q => q.id === currentQ);
+  const prev = Q[(idx - 1 + Q.length) % Q.length];
+  currentQ = prev.id;
+  renderModal(currentQ);
+}
+function nextQ() {
+  const idx = Q.findIndex(q => q.id === currentQ);
+  const next = Q[(idx + 1) % Q.length];
+  currentQ = next.id;
+  renderModal(currentQ);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModalDirect();
+  if (document.getElementById('modal-overlay').classList.contains('open')) {
+    if (e.key === 'ArrowLeft')  prevQ();
+    if (e.key === 'ArrowRight') nextQ();
+  }
+});
+
+updateProgress();
+renderAll();
+</script>
+</body>
+</html>
