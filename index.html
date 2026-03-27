@@ -3,190 +3,530 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Profile Biodata</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-
+<title>Wedding Biodata – Rahul Sharma</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
 body {
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    background: #f1f3f6;
+  min-height: 100vh;
+  background: #f9efe6;
+  background-image:
+    radial-gradient(ellipse at 10% 10%, #fde8d8 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 90%, #fce0cb 0%, transparent 50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  font-family: 'Raleway', sans-serif;
 }
 
-/* Top Bar */
-.navbar {
-    background: #ff5a60;
-    color: white;
-    padding: 15px 20px;
-    font-size: 18px;
-    font-weight: 600;
+/* ── CARD ── */
+.card {
+  width: 680px;
+  max-width: 100%;
+  background: #fff;
+  position: relative;
+  box-shadow: 0 30px 80px rgba(180,100,60,.18), 0 4px 20px rgba(180,100,60,.08);
+  animation: rise .9s cubic-bezier(.22,1,.36,1) both;
 }
 
-/* Main Layout */
-.container {
-    max-width: 1000px;
-    margin: 20px auto;
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 20px;
+@keyframes rise {
+  from { opacity:0; transform:translateY(32px); }
+  to   { opacity:1; transform:translateY(0); }
 }
 
-/* Left Profile Card */
-.profile-card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
+/* ── BORDER FRAME ── */
+.card::before {
+  content:'';
+  position:absolute;
+  inset:10px;
+  border:1px solid #e8b89a;
+  pointer-events:none;
+  z-index:5;
 }
 
-.profile-card img {
-    width: 140px;
-    height: 140px;
-    border-radius: 10px;
-    object-fit: cover;
+/* ── SVG CORNER FLOURISH ── */
+.corner { position:absolute; width:54px; height:54px; z-index:6; }
+.corner svg { width:100%; height:100%; }
+.c-tl { top:5px; left:5px; }
+.c-tr { top:5px; right:5px; transform:scaleX(-1); }
+.c-bl { bottom:5px; left:5px; transform:scaleY(-1); }
+.c-br { bottom:5px; right:5px; transform:scale(-1,-1); }
+
+/* ── TOP RIBBON ── */
+.ribbon {
+  background: linear-gradient(135deg, #c0392b 0%, #96281b 100%);
+  padding: 18px 60px 14px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.ribbon::before {
+  content:'';
+  position:absolute; inset:0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent, transparent 10px,
+    rgba(255,255,255,.03) 10px, rgba(255,255,255,.03) 11px
+  );
+}
+.ribbon-om {
+  font-size: 22px;
+  color: rgba(255,240,220,.9);
+  letter-spacing: 6px;
+  display: block;
+  margin-bottom: 4px;
+}
+.ribbon-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 38px;
+  color: #fff;
+  line-height: 1;
+  text-shadow: 0 2px 12px rgba(0,0,0,.2);
+}
+.ribbon-sub {
+  font-family: 'Raleway', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  color: rgba(255,220,200,.8);
+  text-transform: uppercase;
+  margin-top: 5px;
 }
 
-.profile-card h2 {
-    margin: 10px 0 5px;
+/* ── GOLD DIVIDER ── */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 50px;
+  margin: 0;
+}
+.div-line { flex:1; height:1px; background:linear-gradient(90deg,transparent,#d4a26a,transparent); }
+.div-icon { color:#c0392b; font-size:16px; }
+
+/* ── HERO SECTION ── */
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 28px 44px 24px;
 }
 
-.tag {
-    display: inline-block;
-    background: #ffe1e2;
-    color: #ff5a60;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 12px;
+.photo-wrap {
+  flex-shrink: 0;
+  position: relative;
+  width: 130px;
+}
+.photo-wrap::before {
+  content:'';
+  position:absolute;
+  inset:-5px;
+  border:1.5px solid #e8b89a;
+  border-radius:2px;
+}
+.photo-wrap::after {
+  content:'';
+  position:absolute;
+  inset:-9px;
+  border:0.5px solid #f5d5bb;
+  border-radius:2px;
+}
+.photo-box {
+  width: 130px;
+  height: 160px;
+  background: linear-gradient(145deg,#fde8d8,#f5c8a8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.photo-box::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 50% 30%,rgba(255,255,255,.25),transparent 70%);
+}
+.photo-emoji { font-size:52px; opacity:.6; }
+.photo-note {
+  font-size:9px;
+  letter-spacing:2px;
+  color:#a0724a;
+  text-transform:uppercase;
+  margin-top:6px;
+  font-weight:500;
 }
 
-/* Right Sections */
-.section {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 15px;
+.hero-info { flex:1; }
+.hero-name {
+  font-family: 'Great Vibes', cursive;
+  font-size: 46px;
+  color: #c0392b;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.hero-dob {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  color: #888;
+  font-style: italic;
+  margin-bottom: 14px;
 }
 
-.section h3 {
-    margin-bottom: 15px;
-    color: #ff5a60;
+.quick-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.qtag {
+  background: #fef4ee;
+  border: 1px solid #e8b89a;
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 11.5px;
+  color: #7a3c20;
+  font-weight: 500;
+  letter-spacing: .3px;
+  white-space: nowrap;
+}
+.qtag strong { color: #c0392b; font-weight:600; }
+
+/* ── BODY ── */
+.body { padding: 0 44px 28px; }
+
+/* Section */
+.sec { margin-bottom: 20px; }
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.sec-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #c0392b;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+.sec-line { flex:1; height:1px; background:linear-gradient(90deg,#e8b89a,transparent); }
+.sec-dot { width:5px; height:5px; background:#e8b89a; border-radius:50%; flex-shrink:0; }
+
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px 32px; }
+.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px 20px; }
+
+.field { display:flex; flex-direction:column; gap:2px; }
+.field.span2 { grid-column:1/-1; }
+.field-label {
+  font-size:9.5px;
+  font-weight:500;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:#b08060;
+}
+.field-value {
+  font-family: 'Playfair Display', serif;
+  font-size:14.5px;
+  color:#2c1a0e;
+  line-height:1.35;
 }
 
-/* Info Grid */
-.grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+/* Hobbies pills */
+.pills { display:flex; flex-wrap:wrap; gap:7px; }
+.pill {
+  background:#fff;
+  border:1px solid #e8b89a;
+  color:#7a3c20;
+  font-size:12px;
+  padding:4px 14px;
+  border-radius:30px;
+  font-weight:500;
+  transition: background .2s, color .2s;
+}
+.pill:hover { background:#c0392b; color:#fff; border-color:#c0392b; cursor:default; }
+
+/* ── FOOTER ── */
+.footer {
+  background: linear-gradient(135deg,#c0392b,#96281b);
+  padding: 16px 44px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  position:relative;
+}
+.footer::before {
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,220,190,.5),transparent);
+}
+.fitem {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:12.5px;
+  color:rgba(255,240,230,.9);
+  font-weight:400;
+  font-family:'Raleway',sans-serif;
+}
+.fitem span:first-child { font-size:13px; }
+
+.footer-note {
+  width:100%;
+  text-align:center;
+  font-family:'Great Vibes',cursive;
+  font-size:17px;
+  color:rgba(255,235,215,.7);
+  margin-top:2px;
+  letter-spacing:.5px;
 }
 
-.item {
-    background: #fafafa;
-    padding: 10px;
-    border-radius: 8px;
+@media print {
+  body { background:white; padding:0; }
+  .card { box-shadow:none; }
+  .pill:hover { background:#fff; color:#7a3c20; }
 }
 
-/* Contact Highlight */
-.highlight {
-    background: #fff5f5;
-    border-left: 4px solid #ff5a60;
-}
-
-/* Button */
-.btn {
-    display: block;
-    margin-top: 15px;
-    padding: 10px;
-    background: #ff5a60;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-}
-
-/* Mobile */
-@media(max-width: 768px) {
-    .container {
-        grid-template-columns: 1fr;
-    }
-}
 </style>
 </head>
-
 <body>
 
-<div class="navbar">💍 Matrimonial Profile</div>
+<div class="card">
 
-<div class="container">
+  <!-- Corner ornaments -->
+  <div class="corner c-tl">
+    <svg viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 3 L3 26" stroke="#c0392b" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M3 3 L26 3" stroke="#c0392b" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M8 8 L8 20" stroke="#e8b89a" stroke-width=".8"/>
+      <path d="M8 8 L20 8" stroke="#e8b89a" stroke-width=".8"/>
+      <circle cx="3" cy="3" r="2.5" fill="#c0392b"/>
+      <path d="M13 3 Q18 13 3 18" stroke="#e8b89a" stroke-width="1" fill="none" stroke-linecap="round"/>
+      <circle cx="13" cy="3" r="1.5" fill="#e8b89a"/>
+      <circle cx="3" cy="13" r="1.5" fill="#e8b89a"/>
+    </svg>
+  </div>
+  <div class="corner c-tr">
+    <svg viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 3 L3 26" stroke="#c0392b" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M3 3 L26 3" stroke="#c0392b" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M8 8 L8 20" stroke="#e8b89a" stroke-width=".8"/>
+      <path d="M8 8 L20 8" stroke="#e8b89a" stroke-width=".8"/>
+      <circle cx="3" cy="3" r="2.5" fill="#c0392b"/>
+      <path d="M13 3 Q18 13 3 18" stroke="#e8b89a" stroke-width="1" fill="none" stroke-linecap="round"/>
+      <circle cx="13" cy="3" r="1.5" fill="#e8b89a"/>
+      <circle cx="3" cy="13" r="1.5" fill="#e8b89a"/>
+    </svg>
+  </div>
+  <div class="corner c-bl">
+    <svg viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 3 L3 26" stroke="#c0392b" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M3 3 L26 3" stroke="#c0392b" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M8 8 L8 20" stroke="#e8b89a" stroke-width=".8"/>
+      <path d="M8 8 L20 8" stroke="#e8b89a" stroke-width=".8"/>
+      <circle cx="3" cy="3" r="2.5" fill="#c0392b"/>
+      <path d="M13 3 Q18 13 3 18" stroke="#e8b89a" stroke-width="1" fill="none" stroke-linecap="round"/>
+      <circle cx="13" cy="3" r="1.5" fill="#e8b89a"/>
+      <circle cx="3" cy="13" r="1.5" fill="#e8b89a"/>
+    </svg>
+  </div>
+  <div class="corner c-br">
+    <svg viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 3 L3 26" stroke="#c0392b" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M3 3 L26 3" stroke="#c0392b" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M8 8 L8 20" stroke="#e8b89a" stroke-width=".8"/>
+      <path d="M8 8 L20 8" stroke="#e8b89a" stroke-width=".8"/>
+      <circle cx="3" cy="3" r="2.5" fill="#c0392b"/>
+      <path d="M13 3 Q18 13 3 18" stroke="#e8b89a" stroke-width="1" fill="none" stroke-linecap="round"/>
+      <circle cx="13" cy="3" r="1.5" fill="#e8b89a"/>
+      <circle cx="3" cy="13" r="1.5" fill="#e8b89a"/>
+    </svg>
+  </div>
 
-    <!-- LEFT PROFILE -->
-    <div class="profile-card">
-        <img src="https://via.placeholder.com/150">
-        <h2>Your Name</h2>
-        <div class="tag">Premium Member</div>
+  <!-- Top Ribbon -->
+  <div class="ribbon">
+    <span class="ribbon-om">ॐ</span>
+    <div class="ribbon-title">Vivah Biodata</div>
+    <div class="ribbon-sub">Matrimonial Profile · 2025</div>
+  </div>
 
-        <p>📍 Panvel, Maharashtra</p>
-        <p>💼 Software Engineer</p>
+  <!-- Divider -->
+  <div class="divider" style="padding-top:14px; padding-bottom:14px;">
+    <div class="div-line"></div>
+    <div class="div-icon">✦</div>
+    <div class="div-icon" style="font-size:10px;">❧</div>
+    <div class="div-icon">✦</div>
+    <div class="div-line"></div>
+  </div>
 
-        <a href="#" class="btn">📞 Contact</a>
+  <!-- Hero -->
+  <div class="hero">
+    <div class="photo-wrap">
+      <div class="photo-box">
+        <div class="photo-emoji">👤</div>
+        <div class="photo-note">Photo</div>
+      </div>
+    </div>
+    <div class="hero-info">
+      <div class="hero-name">Rahul Sharma</div>
+      <div class="hero-dob">Born 15 March, 1995 · Nagpur, Maharashtra</div>
+      <div class="quick-tags">
+        <div class="qtag"><strong>5'5"</strong> Height</div>
+        <div class="qtag"><strong>O+</strong> Blood</div>
+        <div class="qtag"><strong>Fair</strong> Complexion</div>
+        <div class="qtag"><strong>No</strong> Manglik</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="body">
+
+    <!-- Personal -->
+    <div class="sec">
+      <div class="sec-head">
+        <div class="sec-dot"></div>
+        <div class="sec-label">Personal Details</div>
+        <div class="sec-line"></div>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <div class="field-label">Full Name</div>
+          <div class="field-value">Rahul Anil Sharma</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Date of Birth</div>
+          <div class="field-value">15 March, 1995</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Place of Birth</div>
+          <div class="field-value">Nagpur, Maharashtra</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Rashi · Nakshatra</div>
+          <div class="field-value">Mithun · Punarvasu</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Marital Status</div>
+          <div class="field-value">Never Married</div>
+        </div>
+      </div>
     </div>
 
-    <!-- RIGHT CONTENT -->
-    <div>
-
-        <!-- Basic Info -->
-        <div class="section">
-            <h3>Basic Details</h3>
-            <div class="grid">
-                <div class="item">Age: 28</div>
-                <div class="item">Height: 5'8"</div>
-                <div class="item">Religion: Hindu</div>
-                <div class="item">Mother Tongue: Marathi</div>
-                <div class="item">Marital Status: Unmarried</div>
-                <div class="item">City: Panvel</div>
-            </div>
+    <!-- Religion -->
+    <div class="sec">
+      <div class="sec-head">
+        <div class="sec-dot"></div>
+        <div class="sec-label">Religious Details</div>
+        <div class="sec-line"></div>
+      </div>
+      <div class="grid3">
+        <div class="field">
+          <div class="field-label">Religion</div>
+          <div class="field-value">Hindu</div>
         </div>
-
-        <!-- Career -->
-        <div class="section">
-            <h3>Education & Career</h3>
-            <div class="grid">
-                <div class="item">Qualification: B.Tech</div>
-                <div class="item">Profession: Software Engineer</div>
-                <div class="item">Company: XYZ Pvt Ltd</div>
-                <div class="item">Income: ₹XX LPA</div>
-            </div>
+        <div class="field">
+          <div class="field-label">Caste · Sub-Caste</div>
+          <div class="field-value">Brahmin · Deshastha</div>
         </div>
-
-        <!-- Family -->
-        <div class="section">
-            <h3>Family Details</h3>
-            <div class="grid">
-                <div class="item">Father: Business</div>
-                <div class="item">Mother: Homemaker</div>
-                <div class="item">Siblings: 1 Sister</div>
-                <div class="item">Family Type: Nuclear</div>
-            </div>
+        <div class="field">
+          <div class="field-label">Gotra</div>
+          <div class="field-value">Kashyap</div>
         </div>
-
-        <!-- About -->
-        <div class="section">
-            <h3>About Me</h3>
-            <p>
-                I am a simple, career-oriented person with modern values and strong cultural roots.
-                Looking for a compatible life partner who is understanding and supportive.
-            </p>
-        </div>
-
-        <!-- Contact -->
-        <div class="section highlight">
-            <h3>Contact Details</h3>
-            <p>📞 +91-XXXXXXXXXX</p>
-            <p>📧 your@email.com</p>
-        </div>
-
+      </div>
     </div>
+
+    <!-- Education & Career -->
+    <div class="sec">
+      <div class="sec-head">
+        <div class="sec-dot"></div>
+        <div class="sec-label">Education &amp; Career</div>
+        <div class="sec-line"></div>
+      </div>
+      <div class="grid2">
+        <div class="field span2">
+          <div class="field-label">Qualification</div>
+          <div class="field-value">B.Tech — Computer Science · VNIT Nagpur (2017)</div>
+        </div>
+        <div class="field span2">
+          <div class="field-label">Occupation</div>
+          <div class="field-value">Senior Software Engineer · Infosys Ltd., Pune</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Experience</div>
+          <div class="field-value">7 Years</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Current City</div>
+          <div class="field-value">Kothrud, Pune</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Family -->
+    <div class="sec">
+      <div class="sec-head">
+        <div class="sec-dot"></div>
+        <div class="sec-label">Family Details</div>
+        <div class="sec-line"></div>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <div class="field-label">Father</div>
+          <div class="field-value">Anil Sharma · Retd. Bank Manager</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Mother</div>
+          <div class="field-value">Sunanda Sharma · Homemaker</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Siblings</div>
+          <div class="field-value">1 Sister (Married)</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Native Place</div>
+          <div class="field-value">Wardha, Maharashtra</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hobbies -->
+    <div class="sec">
+      <div class="sec-head">
+        <div class="sec-dot"></div>
+        <div class="sec-label">Interests &amp; Hobbies</div>
+        <div class="sec-line"></div>
+      </div>
+      <div class="pills">
+        <span class="pill">🎵 Classical Music</span>
+        <span class="pill">📷 Photography</span>
+        <span class="pill">🏔️ Trekking</span>
+        <span class="pill">📚 Reading</span>
+        <span class="pill">🏏 Cricket</span>
+        <span class="pill">🍳 Cooking</span>
+        <span class="pill">✈️ Travelling</span>
+      </div>
+    </div>
+
+  </div><!-- /body -->
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="fitem"><span>📞</span> +91 98765 43210</div>
+    <div class="fitem"><span>✉️</span> rahul.sharma@email.com</div>
+    <div class="fitem"><span>📍</span> Kothrud, Pune – 411 038</div>
+    <div class="footer-note">With the Blessings of God · Shubh Vivah</div>
+  </div>
 
 </div>
-
 </body>
 </html>
