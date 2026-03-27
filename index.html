@@ -112,8 +112,9 @@ body {
 .hero {
   display: flex;
   align-items: center;
-  gap: 28px;
+  justify-content: center;
   padding: 28px 44px 24px;
+  text-align: center;
 }
 
 .photo-wrap {
@@ -356,7 +357,7 @@ body {
   <div class="ribbon">
     <span class="ribbon-om">ॐ</span>
     <div class="ribbon-title">Vivah Biodata</div>
-    <div class="ribbon-sub">Matrimonial Profile · 2025</div>
+    <div class="ribbon-sub">Matrimonial Profile</div>
   </div>
 
   <!-- Divider -->
@@ -369,23 +370,18 @@ body {
   </div>
 
   <!-- Hero -->
-   <div class="hero">
-    <div class="photo-wrap">
-      <div class="photo-box">
-        
-      </div>
-    </div>
+   <div class="hero" style="justify-content:center; text-align:center;">
     <div class="hero-info">
-      <div class="hero-name">Rahul Sharma</div>
-      <div class="hero-dob">Born 15 March, 1995 · Nagpur, Maharashtra</div>
-      <div class="quick-tags">
+      <div class="hero-name">Abhishek Mallah</div>
+      <div class="hero-dob">Born 17 September, 1999 · Varanasi, Uttar Pradesh</div>
+      <div class="quick-tags" style="justify-content:center;">
         <div class="qtag"><strong>5'5"</strong> Height</div>
         <div class="qtag"><strong>O+</strong> Blood</div>
         <div class="qtag"><strong>Fair</strong> Complexion</div>
         <div class="qtag"><strong>No</strong> Manglik</div>
       </div>
     </div>
-  </div>
+</div>
 
   <!-- Body -->
   <div class="body">
@@ -399,21 +395,21 @@ body {
       </div>
       <div class="grid2">
         <div class="field">
-          <div class="field-label">Full Name</div>
-          <div class="field-value">Rahul Anil Sharma</div>
+          <div class="field-label">Name</div>
+          <div class="field-value">Abhishek Mallah</div>
         </div>
         <div class="field">
           <div class="field-label">Date of Birth</div>
-          <div class="field-value">15 March, 1995</div>
+          <div class="field-value">17 September, 1999</div>
         </div>
         <div class="field">
           <div class="field-label">Place of Birth</div>
-          <div class="field-value">Nagpur, Maharashtra</div>
+          <div class="field-value">Varanasi, Uttar Pradesh</div>
         </div>
-        <div class="field">
-          <div class="field-label">Rashi · Nakshatra</div>
-          <div class="field-value">Mithun · Punarvasu</div>
-        </div>
+        <!--<div class="field">-->
+        <!--  <div class="field-label">Rashi · Nakshatra</div>-->
+        <!--  <div class="field-value">Mithun · Punarvasu</div>-->
+        <!--</div>-->
         <div class="field">
           <div class="field-label">Marital Status</div>
           <div class="field-value">Never Married</div>
@@ -434,13 +430,13 @@ body {
           <div class="field-value">Hindu</div>
         </div>
         <div class="field">
-          <div class="field-label">Caste · Sub-Caste</div>
-          <div class="field-value">Brahmin · Deshastha</div>
+          <div class="field-label">Caste</div>
+          <div class="field-value">Mallah</div>
         </div>
-        <div class="field">
-          <div class="field-label">Gotra</div>
-          <div class="field-value">Kashyap</div>
-        </div>
+        <!--<div class="field">-->
+        <!--  <div class="field-label">Gotra</div>-->
+        <!--  <div class="field-value">Kashyap</div>-->
+        <!--</div>-->
       </div>
     </div>
 
@@ -454,19 +450,19 @@ body {
       <div class="grid2">
         <div class="field span2">
           <div class="field-label">Qualification</div>
-          <div class="field-value">B.Tech — Computer Science · VNIT Nagpur (2017)</div>
+          <div class="field-value">Bachelor of Engineering — Information Technology · Mumbai</div>
         </div>
         <div class="field span2">
           <div class="field-label">Occupation</div>
-          <div class="field-value">Senior Software Engineer · Infosys Ltd., Pune</div>
+          <div class="field-value">Senior Software Engineer · Infosys Ltd, Mumbai</div>
         </div>
-        <div class="field">
-          <div class="field-label">Experience</div>
-          <div class="field-value">7 Years</div>
-        </div>
+        <!--<div class="field">-->
+        <!--  <div class="field-label">Experience</div>-->
+        <!--  <div class="field-value">7 Years</div>-->
+        <!--</div>-->
         <div class="field">
           <div class="field-label">Current City</div>
-          <div class="field-value">Kothrud, Pune</div>
+          <div class="field-value">Mumbai</div>
         </div>
       </div>
     </div>
@@ -489,11 +485,12 @@ body {
         </div>
         <div class="field">
           <div class="field-label">Siblings</div>
-          <div class="field-value">1 Sister (Married)</div>
+          <div class="field-value">1 Sister (Study)</div>
+          <div class="field-value">1 Brother (Study)</div>
         </div>
         <div class="field">
           <div class="field-label">Native Place</div>
-          <div class="field-value">Wardha, Maharashtra</div>
+          <div class="field-value">Varanasi, Uttar Pradesh</div>
         </div>
       </div>
     </div>
@@ -511,7 +508,6 @@ body {
         <span class="pill">🏔️ Trekking</span>
         <span class="pill">📚 Reading</span>
         <span class="pill">🏏 Cricket</span>
-        <span class="pill">🍳 Cooking</span>
         <span class="pill">✈️ Travelling</span>
       </div>
     </div>
@@ -520,10 +516,11 @@ body {
 
   <!-- Footer -->
   <div class="footer">
-    <div class="fitem"><span>📞</span> +91 98765 43210</div>
-    <div class="fitem"><span>✉️</span> rahul.sharma@email.com</div>
-    <div class="fitem"><span>📍</span> Kothrud, Pune – 411 038</div>
-    <div class="footer-note">With the Blessings of God · Shubh Vivah</div>
+    <!--<div class="fitem"><span>📞</span> +91 98765 43210</div>-->
+    <!--<div class="fitem"><span>✉️</span> rahul.sharma@email.com</div>-->
+    <!--<div class="fitem"><span>📍</span> Kothrud, Pune – 411 038</div>-->
+    
+    <div class="footer-note">With the Blessings of God</div>
   </div>
 
 </div>
